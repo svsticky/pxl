@@ -43,7 +43,7 @@ def init_cmd(force: bool):
 
 @cli.command(name='clean')
 @click.option('--clean-config', is_flag=True, default=False, help='remove config')
-def init_cmd(clean_config: bool):
+def clean_cmd(clean_config: bool):
     """Clean pxl state"""
     confirmation = input('Are you sure? [y/N] ')
     if confirmation.lower() != 'y':
