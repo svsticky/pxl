@@ -10,6 +10,10 @@ pyyaml = "*"
 "jinja2" = "*"
 
 [dev-packages]
+mypy = "*"
+
+[scripts]
+typecheck = "mypy ."
 
 [requires]
 python_version = "3.7"
