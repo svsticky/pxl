@@ -1,13 +1,14 @@
 import uuid
+import boto3  # type: ignore
 
 from enum import Enum
 from pathlib import Path
-from typing import Union
+from typing import Any, Union
 
 import pxl.state as state
 
 
-def as_public(
+def public_image(
         config: state.Config,
         local_filename: Path,
     ) -> uuid.UUID:
@@ -17,19 +18,41 @@ def as_public(
     file_uuid = uuid.uuid4()
     extension = get_normalized_extension(local_filename)
     object_name = f'{file_uuid}{extension}'
+
     print(f'Uploading {local_filename} as {object_name}')
+    client = _get_client(config)
+
+    extra_args = {
+        'ContentType': 'image/jpeg',
+        'ACL': 'public-read',
+    }
+
+    client.upload_file(Filename=str(local_filename),
+                       Bucket=config.s3_bucket,
+                       ExtraArgs=extra_args,
+                       Key=object_name)
+
     return file_uuid
 
 
-def as_private(
+def private_json(
         config: state.Config,
         local_filename: Path,
         object_name: str,
-    ) -> str:
+    ) -> None:
     """
-    Upload a local file as private under a given name. Returns
+    Upload a local JSON file as private under a given name.
     """
-    pass
+    client = _get_client(config)
+
+    extra_args = {
+        'ContentType': 'application/json',
+    }
+
+    client.upload_file(Filename=str(local_filename),
+                       Bucket=config.s3_bucket,
+                       ExtraArgs=extra_args,
+                       Key=object_name)
 
 
 def get_normalized_extension(filename: Path) -> str:
@@ -39,3 +62,10 @@ def get_normalized_extension(filename: Path) -> str:
         return '.jpg'
 
     return suffix_lowered
+
+
+def _get_client(config: state.Config) -> Any:
+    return boto3.client(service_name='s3',
+                        aws_access_key_id=config.s3_key_id,
+                        aws_secret_access_key=config.s3_key_secret,
+                        endpoint_url=f'https://{config.s3_region}.{config.s3_endpoint}')

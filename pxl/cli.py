@@ -77,7 +77,7 @@ def upload_cmd(dir_name: str) -> None:
         if not entry.suffix.lower() in ['.jpeg', '.jpg']:
             continue
 
-        uuid = upload.as_public(pxl_config, entry)
+        uuid = upload.public_image(pxl_config, entry)
 
 
 def get_input(
