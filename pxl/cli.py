@@ -6,6 +6,7 @@ from pathlib import Path
 from typing import Optional
 
 import pxl.state as state
+import pxl.upload as upload
 
 @click.group(name='pxl')
 def cli():
@@ -56,20 +57,27 @@ def clean_cmd(clean_config: bool):
 
 @cli.command(name='upload')
 @click.argument('dir_name')
-def add_cmd(dir_name: str) -> None:
+def upload_cmd(dir_name: str) -> None:
     """
     Upload a directory to the photo hosting.
     """
-    state.get_state_or_fail()
+    (pxl_state, pxl_config) = state.get_state_and_config_or_fail()
 
     dir_path = Path(dir_name)
     if not dir_path.is_dir():
         print(f'{dir_path} is not a directory.')
 
-    album_name = input('What name should the album have? ')
-    print(str(album_name))
+    # Find all files with known JPEG extensions. We don't
+    # traverse nested directories, just the toplevel.
+    for entry in dir_path.iterdir():
+        if not entry.is_file():
+            print('hi')
+            continue
 
-    # TODO: add new album to state. Upload. Regenerate index
+        if not entry.suffix.lower() in ['.jpeg', '.jpg']:
+            continue
+
+        uuid = upload.as_public(pxl_config, entry)
 
 
 def get_input(

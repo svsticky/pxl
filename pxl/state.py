@@ -1,10 +1,12 @@
+from __future__ import annotations
+
 import json
 import uuid
 import sys
 
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, Tuple
 
 
 PXL_DIR = Path.home() / Path('.pxl/')
@@ -28,6 +30,15 @@ class Config:
             's3_key_id': self.s3_key_id,
             's3_key_secret': self.s3_key_secret,
         }
+
+    @classmethod
+    def from_json(cls, json: Dict[str, Any]) -> Config:
+        return cls(
+            s3_endpoint = json['s3_endpoint'],
+            s3_region = json['s3_region'],
+            s3_bucket = json['s3_bucket'],
+            s3_key_id = json['s3_key_id'],
+            s3_key_secret = json['s3_key_secret'])
 
 
 @dataclass
@@ -111,7 +122,7 @@ def clean(clean_config=False) -> None:
         PXL_DIR.rmdir()
 
 
-def get_state_or_fail() -> State:
+def get_state_and_config_or_fail() -> Tuple[State, Config]:
     if not is_initiated():
         print('Please run `pxl init` before running other commands')
         sys.exit(1)
@@ -119,13 +130,21 @@ def get_state_or_fail() -> State:
     with PXL_STATE.open() as f:
         state_json = json.load(f)
 
+    with PXL_CONFIG.open() as f:
+        config_json = json.load(f)
+
     state = State.from_json(state_json)
     if state is None:
         print('Corrupted pxl state. Please fix or clean.')
         sys.exit(1)
 
-    return state
+    config = Config.from_json(config_json)
+    if state is None:
+        print('Corrupted pxl config. Please fix or clean.')
+        sys.exit(1)
+
+    return (state, config)
 
 
 def is_initiated() -> bool:
-    return PXL_STATE.is_file()
+    return PXL_STATE.is_file() and PXL_CONFIG.is_file()
