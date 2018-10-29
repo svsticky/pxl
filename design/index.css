@@ -1,0 +1,86 @@
+:root {
+  --max-image-width: 400px;
+  --max-image-height: 400px;
+  --main-page-width: 80%;
+  --album-title-font: Verdana, Geneva, sans-serif;
+  --theme-light-blue: #6290c3;
+  --theme-dark-blue: #1a1b41;
+  --theme-sand: #f7edd7;
+}
+
+html { font-size: 100%; }
+
+body { background-color: #f5f5f5; }
+
+
+/* Better mobile experience */
+@viewport {
+	width: 100%;
+	zoom: 1.0;
+	user-zoom: fixed;
+}
+
+/* Grid */
+.content-container {
+	 width: 100%;
+	 margin: 0px;
+	 padding: 0px;
+   display: flex;
+   justify-content: center;
+}
+
+.grid-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  width: var(--main-page-width); 
+}
+
+/* ---- ALBUM SECTION -----*/
+
+.album {
+  width: calc(100%/6); 
+  display: flex;
+  flex-wrap: nowrap;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px;
+  margin: 20px;
+  background-color: white;
+  -webkit-transition: background-color 0.2s;
+}
+
+.album-title {
+  font-family: var(--album-title-font);
+  width: 100%;
+  text-align: center;
+}
+
+.album-cover {
+  width: 100%;
+  height: auto;
+  max-width: var(--max-image-width);
+  max-height: var(--max-image-height);
+}
+
+
+@media screen and (max-width: 1200px) {
+  .album {
+    width: calc(100%/3);
+  }
+}
+
+@media screen and (max-width: 800px) {
+  .album {
+    width: 100%;
+  }
+}
+
+.album:hover {
+  cursor: pointer;
+  background: var(--theme-dark-blue);
+  color: white;
+}
+
+
