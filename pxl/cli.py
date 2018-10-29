@@ -1,10 +1,11 @@
 import click
 import getpass
-import pxl.state as state
 import sys
 
 from pathlib import Path
+from typing import Optional
 
+import pxl.state as state
 
 @click.group(name='pxl')
 def cli():
@@ -26,11 +27,11 @@ def init_cmd(force: bool):
     print('Defaults are between parentheses.')
     print()
 
-    s3_endpoint = input('S3 endpoint (digitaloceanspaces.com): ')
-    s3_region = input('S3 region (ams3): ')
-    s3_bucket = input('S3 bucket: ')
-    s3_key_id = input('S3 key ID: ')
-    s3_key_secret = getpass.getpass('S3 key secret (not echoed): ')
+    s3_endpoint = get_input('S3 endpoint ({default}): ', default='digitaloceanspaces.com')
+    s3_region = get_input('S3 region ({default}): ', default='ams3')
+    s3_bucket = get_input('S3 bucket: ')
+    s3_key_id = get_input('S3 key ID: ')
+    s3_key_secret = get_input('S3 key secret (not echoed): ', hide_input=True)
 
     config = state.Config(s3_endpoint,
                           s3_region,
@@ -69,6 +70,25 @@ def add_cmd(dir_name: str) -> None:
     print(str(album_name))
 
     # TODO: add new album to state. Upload. Regenerate index
+
+
+def get_input(
+        prompt: str,
+        default: Optional[str]=None,
+        hide_input: bool=False
+    ) -> str:
+    # Slightly magic behavior: if the default is set, we call the
+    # format method with the default on the string. This means the
+    # user is shown the default.
+    if default:
+        prompt = prompt.format(default=default)
+
+    user_input = getpass.getpass(prompt) if hide_input else input(prompt)
+
+    if user_input == '' and default:
+        return default
+
+    return user_input
 
 
 def main():
