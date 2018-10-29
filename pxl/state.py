@@ -38,11 +38,11 @@ class Image:
 
     # The UUID derives the remote filename for the original, detail
     # and thumbnail versions of the image.
-    uuid: uuid.UUID
+    remote_uuid: uuid.UUID
 
     def to_json(self):
         return {
-            'uuid': self.uuid.hex,
+            'uuid': self.remote_uuid.hex,
         }
 
 
@@ -79,7 +79,7 @@ class State:
                     albums=[Album(
                             images=[Image(
                                     local_filename = Path('sticky.png'),
-                                    uuid = uuid.uuid4()
+                                    remote_uuid = uuid.uuid4()
                                 )],
                             name_display = "Foobar",
                             name_nav = "foobar"
@@ -100,7 +100,7 @@ def initialize(config: Config) -> None:
         json.dump(config.to_json(), config_file)
 
     with PXL_STATE.open(mode='w') as state_file:
-        json.dump(default_state.to_json(), state_file)
+        json.dump(default_state.to_json(), state_file)  # type: ignore
 
 
 def clean(clean_config=False) -> None:
@@ -117,7 +117,7 @@ def get_state_or_fail() -> State:
         sys.exit(1)
 
     with PXL_STATE.open() as f:
-        state_json = json.read(f)
+        state_json = json.load(f)
 
     state = State.from_json(state_json)
     if state is None:
