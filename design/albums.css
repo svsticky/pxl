@@ -2,10 +2,6 @@
   --max-image-width: 400px;
   --max-image-height: 400px;
   --main-page-width: 80%;
-  --album-title-font: Verdana, Geneva, sans-serif;
-  --theme-light-blue: #6290c3;
-  --theme-dark-blue: #1a1b41;
-  --theme-sand: #f7edd7;
 }
 
 html { font-size: 100%; }
@@ -48,6 +44,7 @@ body { background-color: #f5f5f5; }
   padding: 20px;
   margin: 20px;
   background-color: white;
+  box-shadow: 0px 2px 3px rgba(0,0,0,.13) ,1px 2px 2px rgba(0,0,0,.1);
   -webkit-transition: background-color 0.2s;
 }
 
@@ -55,13 +52,19 @@ body { background-color: #f5f5f5; }
   font-family: var(--album-title-font);
   width: 100%;
   text-align: center;
+  font-size: 1rem;
+}
+
+.album-annotation {
+  color: grey;
+  font-size: 1.5rem;
 }
 
 .album-cover {
   width: 100%;
   height: auto;
   max-width: var(--max-image-width);
-  max-height: var(--max-image-height);
+  max-height: auto;
 }
 
 
