@@ -16,8 +16,6 @@ function build() {
   if (prev_column_count == column_count) return;
   prev_column_count = column_count;
 
-  console.log("building...");
-
   //First clean up all columns
   range(1,5).map(x => { 
     let el = document.getElementById("photo-column"+x)
@@ -30,13 +28,11 @@ function build() {
   let photos = container.querySelectorAll(".photo");
   let columns = range(1,column_count).map(x => document.getElementById("photo-column"+x));
 
-  console.log(columns)
   //Casino style hand out all the photos to the columns
   for (let i=0; i<photos.length; i++) 
   {
     columns[i%column_count].appendChild(photos[i].cloneNode(true));
   }
-  return columns;
 }
 
 function range(start, end) {
