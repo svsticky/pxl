@@ -4,3 +4,15 @@
   --theme-dark-blue: #1a1b41;
   --theme-sand: #f7edd7;
 }
+
+body { background-color: #f5f5f5 }
+
+html { font-size: 100%; }
+
+
+/* Better mobile experience */
+@viewport {
+	width: 100%;
+	zoom: 1.0;
+	user-zoom: fixed;
+}
