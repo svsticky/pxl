@@ -3,7 +3,7 @@ import getpass
 import sys
 
 from pathlib import Path
-from typing import Optional
+from typing import Callable, Optional
 
 import pxl.state as state
 import pxl.upload as upload
@@ -71,7 +71,6 @@ def upload_cmd(dir_name: str) -> None:
     # traverse nested directories, just the toplevel.
     for entry in dir_path.iterdir():
         if not entry.is_file():
-            print('hi')
             continue
 
         if not entry.suffix.lower() in ['.jpeg', '.jpg']:
@@ -83,20 +82,28 @@ def upload_cmd(dir_name: str) -> None:
 def get_input(
         prompt: str,
         default: Optional[str]=None,
-        hide_input: bool=False
+        hide_input: bool=False,
+        validate: Callable[[str], bool] = lambda x: True,
     ) -> str:
+    """
+    Utility for common user input scenario's.
+
+    Supports defaults, hiding the input by the user (useful for sensitive
+    information). Accepts a validate callback and reprompts the user if
+    this callback fails.
+    """
     # Slightly magic behavior: if the default is set, we call the
     # format method with the default on the string. This means the
     # user is shown the default.
     if default:
         prompt = prompt.format(default=default)
 
-    user_input = getpass.getpass(prompt) if hide_input else input(prompt)
-
-    if user_input == '' and default:
-        return default
-
-    return user_input
+    while True:
+        user_input = (getpass.getpass(prompt) if hide_input else input(prompt)).strip()
+        if user_input == '' and default:
+            return default
+        if validate(user_input):
+            return user_input
 
 
 def main():
