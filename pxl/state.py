@@ -47,9 +47,13 @@ class Image:
     # and thumbnail versions of the image.
     remote_uuid: uuid.UUID
 
+    @classmethod
+    def from_json(cls, json):
+        return cls(remote_uuid=uuid.UUID(json['remote_uuid']))
+
     def to_json(self):
         return {
-            'uuid': self.remote_uuid.hex,
+            'remote_uuid': self.remote_uuid.hex,
         }
 
 
@@ -59,9 +63,19 @@ class Album:
     name_display: str
     name_nav: str
 
+    @classmethod
+    def from_json(cls, json):
+        name_display = json['name_display']
+        name_nav = json['name_nav']
+        return cls(images=list(map(Image.from_json, json['images'])),
+                   name_display=name_display,
+                   name_nav=name_nav)
+
     def to_json(self) -> Dict[str, Any]:
         return {
             'images': list(map(lambda image: image.to_json(), self.images)),
+            'name_nav': self.name_nav,
+            'name_display': self.name_display,
         }
 
     def add_image(self, image: Image) -> Album:
@@ -74,10 +88,17 @@ class Album:
 class Index:
     albums: List[Album]
 
+    @classmethod
+    def from_json(cls, json):
+        return cls(albums=list(map(Album.from_json, json['albums'])))
+
     def to_json(self) -> Dict[str, Any]:
         return {
             'albums': list(map(lambda album: album.to_json(), self.albums)),
         }
+
+    def add_album(self, album: Album) -> Index:
+        return Index(albums=self.albums + [album])
 
 
 @dataclass
@@ -85,25 +106,22 @@ class State:
     index: Index
 
     @classmethod
+    def default(cls):
+        return cls(index=Index([]))
+
+    @classmethod
     def from_json(cls, json: Any) -> Optional['State']:
-        return cls(
-                index=Index(
-                    albums=[Album(
-                            images=[Image(
-                                    remote_uuid = uuid.uuid4()
-                                )],
-                            name_display = "Foobar",
-                            name_nav = "foobar"
-                        )]
-                    )
-                )
+        return cls(index=Index.from_json(json['index']))
 
     def to_json(self) -> Dict[str, Any]:
-        return { 'index': self.index.to_json() }
+        return { 'index': Index.to_json(self.index) }
+
+    def add_album(self, album: Album) -> State:
+        return State(index=self.index.add_album(album))
 
 
 def initialize(config: Config) -> None:
-    default_state = State.from_json('unused')
+    default_state = State.default()
 
     PXL_DIR.mkdir(exist_ok=True)
 
@@ -134,6 +152,7 @@ def get_state_and_config_or_fail() -> Tuple[State, Config]:
         config_json = json.load(f)
 
     state = State.from_json(state_json)
+    #state = State.default()
     if state is None:
         print('Corrupted pxl state. Please fix or clean.')
         sys.exit(1)
@@ -148,3 +167,8 @@ def get_state_and_config_or_fail() -> Tuple[State, Config]:
 
 def is_initiated() -> bool:
     return PXL_STATE.is_file() and PXL_CONFIG.is_file()
+
+
+def save_state(state: State):
+    with PXL_STATE.open('w') as f:
+        json.dump(state.to_json(), f)

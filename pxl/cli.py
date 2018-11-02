@@ -87,7 +87,8 @@ def upload_cmd(dir_name: str) -> None:
         image = state.Image(remote_uuid=uuid)
         album = album.add_image(image)
 
-    print(album)
+    pxl_state = pxl_state.add_album(album)
+    state.save_state(pxl_state)
 
 
 def get_input(
