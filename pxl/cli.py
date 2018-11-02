@@ -67,6 +67,13 @@ def upload_cmd(dir_name: str) -> None:
     if not dir_path.is_dir():
         print(f'{dir_path} is not a directory.')
 
+    album_name = get_input("What name should the album have? ({default}) ",
+                           default=dir_path.name.title())
+
+    album = state.Album(name_display=album_name,
+                        name_nav=album_name.lower().replace(' ', '-'),
+                        images=[])
+
     # Find all files with known JPEG extensions. We don't
     # traverse nested directories, just the toplevel.
     for entry in dir_path.iterdir():
@@ -77,6 +84,10 @@ def upload_cmd(dir_name: str) -> None:
             continue
 
         uuid = upload.public_image(pxl_config, entry)
+        image = state.Image(remote_uuid=uuid)
+        album = album.add_image(image)
+
+    print(album)
 
 
 def get_input(

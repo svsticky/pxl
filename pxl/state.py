@@ -64,6 +64,11 @@ class Album:
             'images': list(map(lambda image: image.to_json(), self.images)),
         }
 
+    def add_image(self, image: Image) -> Album:
+        return Album(images=self.images + [image],
+                     name_display=self.name_display,
+                     name_nav=self.name_nav)
+
 
 @dataclass
 class Index:
