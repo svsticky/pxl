@@ -43,10 +43,6 @@ class Config:
 
 @dataclass
 class Image:
-    # The local filename which this image is derived from.
-    # Optional: it's only populated when we add new photos to upload.
-    local_filename: Optional[Path]
-
     # The UUID derives the remote filename for the original, detail
     # and thumbnail versions of the image.
     remote_uuid: uuid.UUID
@@ -89,7 +85,6 @@ class State:
                 index=Index(
                     albums=[Album(
                             images=[Image(
-                                    local_filename = Path('sticky.png'),
                                     remote_uuid = uuid.uuid4()
                                 )],
                             name_display = "Foobar",
