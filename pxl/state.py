@@ -97,8 +97,17 @@ class Index:
             'albums': list(map(lambda album: album.to_json(), self.albums)),
         }
 
-    def add_album(self, album: Album) -> Index:
-        return Index(albums=self.albums + [album])
+    def add_or_replace_album(self, new_album: Album) -> Index:
+        albums = [album for album in self.albums
+                        if album.name_display != new_album.name_display]
+        return Index(albums=albums + [new_album])
+
+    def get_album_by_name(self, album_name: str) -> Optional[Album]:
+        for album in self.albums:
+            if album.name_display == album_name:
+                return album
+
+        return None
 
 
 @dataclass
@@ -116,8 +125,11 @@ class State:
     def to_json(self) -> Dict[str, Any]:
         return { 'index': Index.to_json(self.index) }
 
-    def add_album(self, album: Album) -> State:
-        return State(index=self.index.add_album(album))
+    def add_or_replace_album(self, album: Album) -> State:
+        return State(index=self.index.add_or_replace_album(album))
+
+    def get_album_by_name(self, album_name: str) -> Optional[Album]:
+        return self.index.get_album_by_name(album_name)
 
 
 def initialize(config: Config) -> None:

@@ -70,9 +70,20 @@ def upload_cmd(dir_name: str) -> None:
     album_name = get_input("What name should the album have? ({default}) ",
                            default=dir_path.name.title())
 
-    album = state.Album(name_display=album_name,
-                        name_nav=album_name.lower().replace(' ', '-'),
-                        images=[])
+    # Get existing album with this name for appending.
+    album = pxl_state.get_album_by_name(album_name)
+    if album:
+        append_confirm = get_input('Appending to existing album ok? [Y/n] ',
+                                   default='y',
+                                   validate=lambda x: x.lower() in ['y', 'n'])
+        if append_confirm == 'n':
+            print('Not appending. Choose a different album name.')
+            sys.exit(1)
+    else:
+        print('Creating new album.')
+        album = state.Album(name_display=album_name,
+                            name_nav=album_name.lower().replace(' ', '-'),
+                            images=[])
 
     # Find all files with known JPEG extensions. We don't
     # traverse nested directories, just the toplevel.
@@ -87,7 +98,7 @@ def upload_cmd(dir_name: str) -> None:
         image = state.Image(remote_uuid=uuid)
         album = album.add_image(image)
 
-    pxl_state = pxl_state.add_album(album)
+    pxl_state = pxl_state.add_or_replace_album(album)
     state.save_state(pxl_state)
 
 
