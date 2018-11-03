@@ -1,10 +1,12 @@
+from __future__ import annotations
+
 import json
 import uuid
 import sys
 
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, Tuple
 
 
 PXL_DIR = Path.home() / Path('.pxl/')
@@ -29,20 +31,29 @@ class Config:
             's3_key_secret': self.s3_key_secret,
         }
 
+    @classmethod
+    def from_json(cls, json: Dict[str, Any]) -> Config:
+        return cls(
+            s3_endpoint = json['s3_endpoint'],
+            s3_region = json['s3_region'],
+            s3_bucket = json['s3_bucket'],
+            s3_key_id = json['s3_key_id'],
+            s3_key_secret = json['s3_key_secret'])
+
 
 @dataclass
 class Image:
-    # The local filename which this image is derived from.
-    # Optional: it's only populated when we add new photos to upload.
-    local_filename: Optional[Path]
-
     # The UUID derives the remote filename for the original, detail
     # and thumbnail versions of the image.
     remote_uuid: uuid.UUID
 
+    @classmethod
+    def from_json(cls, json):
+        return cls(remote_uuid=uuid.UUID(json['remote_uuid']))
+
     def to_json(self):
         return {
-            'uuid': self.remote_uuid.hex,
+            'remote_uuid': self.remote_uuid.hex,
         }
 
 
@@ -52,20 +63,51 @@ class Album:
     name_display: str
     name_nav: str
 
+    @classmethod
+    def from_json(cls, json):
+        name_display = json['name_display']
+        name_nav = json['name_nav']
+        return cls(images=list(map(Image.from_json, json['images'])),
+                   name_display=name_display,
+                   name_nav=name_nav)
+
     def to_json(self) -> Dict[str, Any]:
         return {
             'images': list(map(lambda image: image.to_json(), self.images)),
+            'name_nav': self.name_nav,
+            'name_display': self.name_display,
         }
+
+    def add_image(self, image: Image) -> Album:
+        return Album(images=self.images + [image],
+                     name_display=self.name_display,
+                     name_nav=self.name_nav)
 
 
 @dataclass
 class Index:
     albums: List[Album]
 
+    @classmethod
+    def from_json(cls, json):
+        return cls(albums=list(map(Album.from_json, json['albums'])))
+
     def to_json(self) -> Dict[str, Any]:
         return {
             'albums': list(map(lambda album: album.to_json(), self.albums)),
         }
+
+    def add_or_replace_album(self, new_album: Album) -> Index:
+        albums = [album for album in self.albums
+                        if album.name_display != new_album.name_display]
+        return Index(albums=albums + [new_album])
+
+    def get_album_by_name(self, album_name: str) -> Optional[Album]:
+        for album in self.albums:
+            if album.name_display == album_name:
+                return album
+
+        return None
 
 
 @dataclass
@@ -73,26 +115,25 @@ class State:
     index: Index
 
     @classmethod
+    def default(cls):
+        return cls(index=Index([]))
+
+    @classmethod
     def from_json(cls, json: Any) -> Optional['State']:
-        return cls(
-                index=Index(
-                    albums=[Album(
-                            images=[Image(
-                                    local_filename = Path('sticky.png'),
-                                    remote_uuid = uuid.uuid4()
-                                )],
-                            name_display = "Foobar",
-                            name_nav = "foobar"
-                        )]
-                    )
-                )
+        return cls(index=Index.from_json(json['index']))
 
     def to_json(self) -> Dict[str, Any]:
-        return { 'index': self.index.to_json() }
+        return { 'index': Index.to_json(self.index) }
+
+    def add_or_replace_album(self, album: Album) -> State:
+        return State(index=self.index.add_or_replace_album(album))
+
+    def get_album_by_name(self, album_name: str) -> Optional[Album]:
+        return self.index.get_album_by_name(album_name)
 
 
 def initialize(config: Config) -> None:
-    default_state = State.from_json('unused')
+    default_state = State.default()
 
     PXL_DIR.mkdir(exist_ok=True)
 
@@ -111,7 +152,7 @@ def clean(clean_config=False) -> None:
         PXL_DIR.rmdir()
 
 
-def get_state_or_fail() -> State:
+def get_state_and_config_or_fail() -> Tuple[State, Config]:
     if not is_initiated():
         print('Please run `pxl init` before running other commands')
         sys.exit(1)
@@ -119,13 +160,27 @@ def get_state_or_fail() -> State:
     with PXL_STATE.open() as f:
         state_json = json.load(f)
 
+    with PXL_CONFIG.open() as f:
+        config_json = json.load(f)
+
     state = State.from_json(state_json)
+    #state = State.default()
     if state is None:
         print('Corrupted pxl state. Please fix or clean.')
         sys.exit(1)
 
-    return state
+    config = Config.from_json(config_json)
+    if state is None:
+        print('Corrupted pxl config. Please fix or clean.')
+        sys.exit(1)
+
+    return (state, config)
 
 
 def is_initiated() -> bool:
-    return PXL_STATE.is_file()
+    return PXL_STATE.is_file() and PXL_CONFIG.is_file()
+
+
+def save_state(state: State):
+    with PXL_STATE.open('w') as f:
+        json.dump(state.to_json(), f)
