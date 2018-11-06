@@ -5,6 +5,7 @@ An S3/DigitalOcean spaces photo management script.
 ## Documentation
 
  - [Philosophy and scope](./docs/philosophy.md)
+ - [High-level implementation](./docs/high-level-implementation.md)
 
 ## Development
 
