@@ -1,0 +1,45 @@
+.photo-container {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.photo {
+  position: relative;
+  width: 50%;
+}
+
+.photo > img {
+  width: 100%;
+  height: auto;
+}
+
+.album-text {
+  position: absolute;
+  top: 8px;
+  right: 16px;
+  color: white;
+  font-size: 2rem;
+  padding: 10px;
+  visibility: hidden;
+  opacity: 0;
+  text-shadow: 2px 2px rgba(0,0,0,0.7);
+  -webkit-transition: visibility 0.5s, opacity 0.3s, border 0.1s;
+}
+
+.album-text > a {
+  color: white;
+  text-decoration: none;
+}
+
+.photo:hover .album-text {
+  visibility: visible;
+  opacity: 1;
+}
+
+.album-text:hover {
+  border-bottom: 3px solid white;
+}
