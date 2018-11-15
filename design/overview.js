@@ -9,6 +9,7 @@ function build() {
   let column_count = 5; //baseline value
 
   //Determine the column count by screen width
+  //Note that these exact values are also hardcoded in the css
   if (window.innerWidth < 1200) column_count = 3;
   if (window.innerWidth < 800)  column_count = 1;
 
@@ -38,19 +39,3 @@ function build() {
 function range(start, end) {
   return Array(end - start + 1).fill().map((_, idx) => start + idx)
 }
-
-
-/* TEST FUNCTION FOR SPAWNING A 1000 PICTURES IN THE CONTAINER
-function init() {
-  let container = document.getElementById("photo-container");
-  for(let i=0; i<1000; i++)
-  {
-    let el = document.createElement("div")
-    el.classList.add("photo")
-    let img = document.createElement("img")
-    img.src = "ex" + (Math.floor(Math.random()*5)+1) + ".jpeg"
-    el.appendChild(img)
-    container.appendChild(el);
-  }
-  return container; 
-}*/

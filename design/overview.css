@@ -16,6 +16,7 @@
   padding-right: 5%;
 }
 
+/* Note that these value is also hardcoded in the js build function */
 @media screen and (max-width: 1200px) {
   .grid-container {
     grid-template-columns: 1fr 1fr 1fr;
@@ -24,6 +25,7 @@
   }
 }
 
+/* Note that these value is also hardcoded in the js build function */
 @media screen and (max-width: 800px) {
   .grid-container {
     grid-template-columns: 1fr;
