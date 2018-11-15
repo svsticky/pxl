@@ -41,45 +41,18 @@
   display: none;
 }
 
-#photo-column1 {
-  grid-area: "album1";
+.photo-column {
   display: flex;
   flex-direction: column;
   align-content: space-between;
   width: 100%;
 }
 
-#photo-column2 {
-  grid-area: "album2";
-  display: flex;
-  flex-direction: column;
-  align-content: space-between;
-  width: 100%;
-}
-
-#photo-column3 {
-  grid-area: "album3";
-  display: flex;
-  flex-direction: column;
-  align-content: space-between;
-  width: 100%;
-}
-
-#photo-column4 {
-  grid-area: "album4";
-  display: flex;
-  flex-direction: column;
-  align-content: space-between;
-  width: 100%;
-}
-
-#photo-column5 {
-  grid-area: "album5";
-  display: flex;
-  flex-direction: column;
-  align-content: space-between;
-  width: 100%;
-}
+#photo-column1 { grid-area: "album1"; }
+#photo-column2 { grid-area: "album2"; }
+#photo-column3 { grid-area: "album3"; }
+#photo-column4 { grid-area: "album4"; }
+#photo-column5 { grid-area: "album5"; }
 
 .photo img {
   width: 95%;
