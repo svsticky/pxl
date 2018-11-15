@@ -55,7 +55,11 @@ def load() -> Config:
 
 
 def clean(clean_config=False) -> None:
-    PXL_CONFIG.unlink()
+    try:
+        PXL_CONFIG.unlink()
+        print('Config cleaned.')
+    except FileNotFoundError:
+        print('No config file found to remove. Already gone?')
 
 
 def is_initialized() -> bool:

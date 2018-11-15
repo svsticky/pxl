@@ -42,10 +42,13 @@ def init_cmd(force: bool):
 
 
 @cli.command(name='clean')
-@click.option('--clean-config', is_flag=True, default=False, help='remove config')
-def clean_cmd(clean_config: bool):
-    """Clean pxl state"""
-    confirmation = input('Are you sure? [y/N] ')
+def clean_cmd():
+    """Clean pxl files from system"""
+    print('This operation will remove your `pxl` configuration.')
+    print('Any deployed files or uploaded images are unaffected.')
+    print('')
+
+    confirmation = input('Do you want to continue? [y/N] ')
     if confirmation.lower() != 'y':
         print('Not confirmed. Exiting.')
         sys.exit(0)
