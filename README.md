@@ -4,8 +4,14 @@ An S3/DigitalOcean spaces photo management script.
 
 ## Documentation
 
+User documentation:
+
  - [Philosophy and scope](./docs/philosophy.md)
  - [High-level implementation](./docs/high-level-implementation.md)
+
+Conventions and development:
+
+ - [Git conventions](./docs/git-conventions.md)
 
 ## Development
 
