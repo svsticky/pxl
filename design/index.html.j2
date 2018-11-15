@@ -11,48 +11,13 @@
 <body>
   <div class="content-container">
     <div class="grid-container">
-      <a href="overview.html" class="album">
-      <span class="album-title">
-          <h1>Sticky gaat paardrijden</h1>
-        </span>
-        <img src="ex1.jpeg" alt="picture" class="album-cover">
-        <span class="album-annotation">Geplaatst op 22 mei</span>
+      {% for album in overview.albums %}
+      <a href="/{{ album.name_nav }}/" class="album">
+        <h1 class="album-title">{{ album.name_display }}</h1>
+        <img src="{{ album.images[0].remote_uuid }}.jpg" alt="picture" class="album-cover">
+        <span class="album-annotation">TODO</span>
       </a>
-      <a href="overview.html" class="album">
-        <span class="album-title">
-          <h1>Sticky gaat paardrijden</h1>
-        </span>
-        <img src="colorscheme.png" alt="picture" class="album-cover">
-        <span class="album-annotation">Geplaatst op 22 mei</span>
-      </a>
-      <a href="overview.html" class="album">
-        <span class="album-title">
-          <h1>Sticky gaat paardrijden</h1>
-        </span>
-        <img src="ex2.jpeg" alt="picture" class="album-cover">
-        <span class="album-annotation">Geplaatst op 22 mei</span>
-      </a>
-      <a href="overview.html" class="album">
-        <span class="album-title">
-          <h1>Sticky gaat paardrijden</h1>
-        </span>
-        <img src="ex3.jpeg" alt="picture" class="album-cover">
-        <span class="album-annotation">Geplaatst op 22 mei</span>
-      </article>
-      <a href="overview.html" class="album">
-        <span class="album-title">
-          <h1>Sticky gaat paardrijden</h1>
-        </span>
-        <img src="ex4.jpeg" alt="picture" class="album-cover">
-        <span class="album-annotation">Geplaatst op 22 mei</span>
-      </a>
-      <a href="overview.html "class="album">
-        <span class="album-title">
-          <h1>Sticky gaat paardrijden</h1>
-        </span>
-        <img src="ex5.jpeg" alt="picture" class="album-cover">
-        <span class="album-annotation">Geplaatst op 22 mei</span>
-      </a>
+      {% endfor %}
     </div>
   </div>
 </body>

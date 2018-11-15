@@ -8,6 +8,7 @@ from pathlib import Path
 from typing import Callable, Optional
 
 import pxl.config as config
+import pxl.generate as generate
 import pxl.state as state
 import pxl.upload as upload
 
@@ -110,6 +111,27 @@ def upload_cmd(dir_name: str, force: bool) -> None:
 
         pxl_state = pxl_state.add_or_replace_album(album)
         upload.private_json(client, json.dumps(pxl_state.to_json()), 'state.json')
+
+
+@cli.command('build')
+def build_cmd():
+    """Build a static site based on current state."""
+    # TODO: parameterize
+    output_dir = Path.cwd() / 'build'
+    design_dir = Path.cwd() / 'design'
+
+    cfg = config.load()
+    with upload.client(cfg) as client:
+        try:
+            pxl_state_json = upload.get_json(client, 'state.json')
+            overview = state.Overview.from_json(pxl_state_json)
+        except Exception as e:
+            print(e)
+            sys.exit(1)
+
+        generate.build(overview=overview,
+                       output_dir=output_dir,
+                       template_dir=design_dir)
 
 
 def get_input(
