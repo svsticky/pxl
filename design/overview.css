@@ -1,17 +1,17 @@
-/* ------- GRID SECTION --------- */ 
+/* ------- GRID SECTION --------- */
 
 .content-container {
-	 width: 90%;
-	 margin: 0px;
+  width: 90%;
+  margin: 0px;
 }
 
 .grid-container {
-	display: grid;
-	grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
-	grid-template-areas:
-	  "album1 album2 album3 album4 album5"
-	grid-row-gap: 0px;
-	grid-column-gap: 0px;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  grid-template-areas:
+    "album1 album2 album3 album4 album5";
+  grid-row-gap: 0px;
+  grid-column-gap: 0px;
   padding-left: 5%;
   padding-right: 5%;
 }
@@ -20,15 +20,15 @@
   .grid-container {
     grid-template-columns: 1fr 1fr 1fr;
     grid-template-areas:
-      "album1 album2 album3"
-    }
+      "album1 album2 album3";
+  }
 }
 
 @media screen and (max-width: 800px) {
   .grid-container {
     grid-template-columns: 1fr;
     grid-template-areas:
-      "album1"
+      "album1";
     padding: 0px;
   }
   .content-container {
@@ -36,7 +36,7 @@
   }
 }
 
-/* ------- PHOTO SECTION ------- */ 
+/* ------- PHOTO SECTION ------- */
 #photo-container {
   display: none;
 }
@@ -97,4 +97,3 @@
   width: 100%;
   cursor: pointer;
 }
-
