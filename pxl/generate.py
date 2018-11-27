@@ -39,9 +39,8 @@ def build(overview: state.Overview,
             image_dir.mkdir()
 
             with (image_dir / 'index.html').open('w+') as f:
-                # I'll been running circles around you sooner than you know
-                img_prev = album.images[i-1]
-                img_next = album.images[(i+1) % len(album.images)-1]
+                img_prev = album.images[i-1] if i-1 >= 0 else None
+                img_next = album.images[i+1] if i+1 < len(album.images) else None
 
                 photo_template.stream(img=image,
                                       img_prev=img_prev,
