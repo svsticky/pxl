@@ -1,4 +1,5 @@
 import click
+import datetime
 import getpass
 import json
 import sys
@@ -94,6 +95,7 @@ def upload_cmd(dir_name: str, force: bool) -> None:
             print('Creating new album.')
             album = state.Album(name_display=album_name,
                                 name_nav=album_name.lower().replace(' ', '-'),
+                                created=datetime.datetime.now(),
                                 images=[])
 
         # Find all files with known JPEG extensions. We don't

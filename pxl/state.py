@@ -59,6 +59,7 @@ class Album:
     def add_image(self, image: Image) -> Album:
         return Album(images=self.images + [image],
                      name_display=self.name_display,
+                     created=self.created,
                      name_nav=self.name_nav)
 
 
