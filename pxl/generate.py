@@ -16,8 +16,8 @@ def build(overview: state.Overview,
     album_template = load_template(template_dir / 'album.html.j2')
     photo_template = load_template(template_dir / 'photo.html.j2')
 
-    shutil.rmtree(output_dir)
-    output_dir.mkdir()
+    clear_directory(output_dir)
+    output_dir.mkdir(exist_ok=True)
 
     shutil.copytree(template_dir / 'css', output_dir / 'css')
     shutil.copytree(template_dir / 'js', output_dir / 'js')
@@ -50,3 +50,21 @@ def load_template(template_file: Path) -> jinja2.Template:
 
     with template_file.open() as f:
         return jinja2.Template(f.read())
+
+
+def clear_directory(dir_path: Path):
+    """Remove all directory contents, except for the directory itself.
+
+    This is useful so the inode number for the directory doesn't get removed
+    and HTTP servers and the like keep on working."""
+
+    if not dir_path.exists():
+        return
+
+    assert dir_path.is_dir()
+
+    for entry in dir_path.iterdir():
+        if entry.is_dir():
+            shutil.rmtree(entry)
+        else:
+            entry.unlink()
