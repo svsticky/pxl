@@ -78,6 +78,8 @@ def upload_cmd(dir_name: str, force: bool) -> None:
         try:
             pxl_state_json = upload.get_json(client, 'state.json')
             pxl_state = state.Overview.from_json(pxl_state_json)
+        except client.boto.exceptions.NoSuchKey as e:
+            pxl_state = state.Overview.empty()
         except Exception as e:
             print(e)
             sys.exit(1)
