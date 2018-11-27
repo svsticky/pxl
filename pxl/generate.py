@@ -34,12 +34,20 @@ def build(overview: state.Overview,
             album_template.stream(album=album,
                                   img_baseurl=bucket_puburl).dump(f)
 
-        for image in album.images:
+        for i, image in enumerate(album.images):
             image_dir = album_dir / str(image.remote_uuid)
             image_dir.mkdir()
 
             with (image_dir / 'index.html').open('w+') as f:
-                photo_template.stream(image=image).dump(f)
+                # I'll been running circles around you sooner than you know
+                img_prev = album.images[i-1]
+                img_next = album.images[(i+1) % len(album.images)-1]
+
+                photo_template.stream(img=image,
+                                      img_prev=img_prev,
+                                      img_next=img_next,
+                                      img_baseurl=bucket_puburl,
+                                      album_name=album.name_nav).dump(f)
 
 
 def load_template(template_file: Path) -> jinja2.Template:

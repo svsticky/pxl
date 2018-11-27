@@ -10,14 +10,18 @@
   <title></title>
 </head>
 <body>
-  <a href="photo.html" id="left" class="nav">&lt;</a>
+  {% if img_prev %}
+  <a href="/{{ album_name }}/{{ img_prev.remote_uuid }}" id="left" class="nav">&lt;</a>
+  {% endif %}
   <div class="photo-container">
     <div class="photo">
-      <img src="ex1.jpeg" alt="">
+      <img src="{{ img_baseurl }}/{{ img.remote_uuid }}.jpg">
       <div class="album-text"><a href="overview.html">Sticky gaat paardrijden</a></div>
     </div>
       <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ">Click here to download</a>
   </div>
-  <a href="photo.html" id="right" class="nav">&gt;</a>
+  {% if img_next %}
+  <a href="/{{ album_name }}/{{ img_next.remote_uuid }}" id="right" class="nav">&gt;</a>
+  {% endif %}
 </body>
 </html>
