@@ -31,6 +31,7 @@ class Image:
 
 @dataclass
 class Album:
+    created: datetime.datetime
     images: List[Image]
     name_display: str
     name_nav: str
@@ -42,7 +43,8 @@ class Album:
             name_nav = json['name_nav']
             return cls(images=list(map(Image.from_json, json['images'])),
                        name_display=name_display,
-                       name_nav=name_nav)
+                       name_nav=name_nav,
+                       created=datetime.datetime.fromisoformat(json['created']))
         except KeyError:
             return None
 
@@ -51,6 +53,7 @@ class Album:
             'images': list(map(lambda image: image.to_json(), self.images)),
             'name_nav': self.name_nav,
             'name_display': self.name_display,
+            'created': self.created.isoformat(timespec='seconds'),
         }
 
     def add_image(self, image: Image) -> Album:
