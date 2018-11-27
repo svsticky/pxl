@@ -23,14 +23,16 @@ def build(overview: state.Overview,
     shutil.copytree(template_dir / 'js', output_dir / 'js')
 
     with (output_dir / 'index.html').open('w+') as f:
-        index_template.stream(overview=overview).dump(f)
+        index_template.stream(overview=overview,
+                              img_baseurl=bucket_puburl).dump(f)
 
     for album in overview.albums:
         album_dir = output_dir / album.name_nav
         album_dir.mkdir()
 
         with (album_dir / 'index.html').open('w+') as f:
-            album_template.stream(album=album).dump(f)
+            album_template.stream(album=album,
+                                  img_baseurl=bucket_puburl).dump(f)
 
         for image in album.images:
             image_dir = album_dir / str(image.remote_uuid)

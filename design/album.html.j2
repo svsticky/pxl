@@ -13,26 +13,13 @@
   <div class="content-container">
     <div class="grid-container">
       <div id="photo-container">
-        <div class="photo"><a href="photo.html"><img src="ex1.jpeg" alt=""></a></div>
-        <div class="photo"><a href="photo.html"><img src="ex2.jpeg" alt=""></a></div>
-        <div class="photo"><a href="photo.html"><img src="ex3.jpeg" alt=""></a></div>
-        <div class="photo"><a href="photo.html"><img src="ex4.jpeg" alt=""></a></div>
-        <div class="photo"><a href="photo.html"><img src="ex5.jpeg" alt=""></a></div>
-        <div class="photo"><a href="photo.html"><img src="ex3.jpeg" alt=""></a></div>
-        <div class="photo"><a href="photo.html"><img src="ex4.jpeg" alt=""></a></div>
-        <div class="photo"><a href="photo.html"><img src="ex4.jpeg" alt=""></a></div>
-        <div class="photo"><a href="photo.html"><img src="ex4.jpeg" alt=""></a></div>
-        <div class="photo"><a href="photo.html"><img src="ex2.jpeg" alt=""></a></div>
-        <div class="photo"><a href="photo.html"><img src="ex4.jpeg" alt=""></a></div>
-        <div class="photo"><a href="photo.html"><img src="ex1.jpeg" alt=""></a></div>
-        <div class="photo"><a href="photo.html"><img src="ex2.jpeg" alt=""></a></div>
-        <div class="photo"><a href="photo.html"><img src="ex2.jpeg" alt=""></a></div>
-        <div class="photo"><a href="photo.html"><img src="ex5.jpeg" alt=""></a></div>
-        <div class="photo"><a href="photo.html"><img src="ex3.jpeg" alt=""></a></div>
-        <div class="photo"><a href="photo.html"><img src="ex4.jpeg" alt=""></a></div>
-        <div class="photo"><a href="photo.html"><img src="ex3.jpeg" alt=""></a></div>
-        <div class="photo"><a href="photo.html"><img src="ex4.jpeg" alt=""></a></div>
-        <div class="photo"><a href="photo.html"><img src="ex2.jpeg" alt=""></a></div>
+        {% for image in album.images %}
+        <div class="photo">
+          <a href="/{{ album.name_nav }}/{{ image.remote_uuid }}">
+            <img src="{{ img_baseurl }}/{{ image.remote_uuid }}.jpg">
+          </a>
+        </div>
+        {% endfor %}
       </div>
 
       <div id="photo-column1" class="photo-column"></div>

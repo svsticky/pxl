@@ -14,7 +14,7 @@
       {% for album in overview.albums %}
       <a href="/{{ album.name_nav }}/" class="album">
         <h1 class="album-title">{{ album.name_display }}</h1>
-        <img src="{{ album.images[0].remote_uuid }}.jpg" alt="picture" class="album-cover">
+        <img src="{{ img_baseurl }}/{{ album.images[0].remote_uuid }}.jpg" alt="picture" class="album-cover">
         <span class="album-annotation">TODO</span>
       </a>
       {% endfor %}
