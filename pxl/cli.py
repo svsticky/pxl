@@ -125,6 +125,9 @@ def build_cmd():
         try:
             pxl_state_json = upload.get_json(client, 'state.json')
             overview = state.Overview.from_json(pxl_state_json)
+        except client.boto.exceptions.NoSuchKey as e:
+            print('Remote state not found. Please upload before continuing.')
+            sys.exit(1)
         except Exception as e:
             print(e)
             sys.exit(1)
