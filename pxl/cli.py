@@ -136,9 +136,12 @@ def build_cmd():
             print(e)
             sys.exit(1)
 
+        bucket_puburl = f'https://{cfg.s3_bucket}.{cfg.s3_region}.{cfg.s3_endpoint}'
+
         generate.build(overview=overview,
                        output_dir=output_dir,
-                       template_dir=design_dir)
+                       template_dir=design_dir,
+                       bucket_puburl=bucket_puburl)
 
 
 def get_input(

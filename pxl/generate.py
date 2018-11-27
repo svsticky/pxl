@@ -6,7 +6,10 @@ from pathlib import Path
 import pxl.state as state
 
 
-def build(overview: state.Overview, output_dir: Path, template_dir: Path):
+def build(overview: state.Overview,
+          output_dir: Path,
+          template_dir: Path,
+          bucket_puburl: str):
     """Build a static site based on the state."""
 
     index_template = load_template(template_dir / 'index.html.j2')
