@@ -18,6 +18,20 @@ def build(overview: state.Overview, output_dir: Path, template_dir: Path):
     with (output_dir / 'index.html').open('w+') as f:
         index_template.stream(overview=overview).dump(f)
 
+    for album in overview.albums:
+        album_dir = output_dir / album.name_nav
+        album_dir.mkdir()
+
+        with (album_dir / 'index.html').open('w+') as f:
+            album_template.stream(album=album).dump(f)
+
+        for image in album.images:
+            image_dir = album_dir / str(image.remote_uuid)
+            image_dir.mkdir()
+
+            with (image_dir / 'index.html').open('w+') as f:
+                photo_template.stream(image=image).dump(f)
+
 
 def load_template(template_file: Path) -> jinja2.Template:
     """Load a jinja template from a file.
