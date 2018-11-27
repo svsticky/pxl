@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import datetime
 import json
+import locale
 import uuid
 import sys
 
@@ -35,6 +36,23 @@ class Album:
     images: List[Image]
     name_display: str
     name_nav: str
+
+    @property
+    def created_human(self):
+        # We need to set the locale, because of course Python uses
+        # this kind of braindamage instead of accepting a parameter
+        # to the format function... Not thread safe of course.
+        default_locale = locale.getlocale(locale.LC_TIME)
+        locale.setlocale(locale.LC_TIME, 'en_US.UTF-8')
+
+        format_str = '%b %d, %Y'  # Ex: Jan 25, 2018
+        res = self.created.strftime(format_str)
+
+        # Set back the default locale.
+        locale.setlocale(locale.LC_TIME, default_locale)
+
+        return res
+
 
     @classmethod
     def from_json(cls, json):
