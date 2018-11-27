@@ -16,6 +16,9 @@ def build(overview: state.Overview, output_dir: Path, template_dir: Path):
     shutil.rmtree(output_dir)
     output_dir.mkdir()
 
+    shutil.copytree(template_dir / 'css', output_dir / 'css')
+    shutil.copytree(template_dir / 'js', output_dir / 'js')
+
     with (output_dir / 'index.html').open('w+') as f:
         index_template.stream(overview=overview).dump(f)
 
