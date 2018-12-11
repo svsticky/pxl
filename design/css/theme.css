@@ -1,8 +1,23 @@
 :root {
   --album-title-font: Verdana, Geneva, sans-serif;
-  --theme-light-blue: #6290c3;
-  --theme-dark-blue: #1a1b41;
-  --theme-sand: #f7edd7;
+
+  --prim-main: #45C4FB;
+  --prim-lightest: #9FE0FC;
+  --prim-light: #6FD1FC;
+  --prim-dark: #1BB5F8;
+  --prim-darkest: #06A8EE;
+
+  --sec-main: #FFA43E;
+  --sec-lightest: #FFD19D;
+  --sec-darkest: #FF8700;
+
+  --grey-main: #232627;
+  --grey-lightest: #373D3F;
+  --grey-light: #2C3031;
+  --grey-dark: #1F2324;
+  --grey-darkest: #161C1F;
+
+  --white: #fefefe;
 }
 
 body {
