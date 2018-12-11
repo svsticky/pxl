@@ -54,6 +54,12 @@ def load() -> Config:
     return config
 
 
+def save(cfg: Config) -> None:
+    PXL_DIR.mkdir(parents=True)
+    with PXL_CONFIG.open('w') as f:
+        json.dump(cfg.to_json, f)
+
+
 def clean(clean_config=False) -> None:
     try:
         PXL_CONFIG.unlink()

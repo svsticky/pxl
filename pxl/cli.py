@@ -36,11 +36,13 @@ def init_cmd(force: bool):
     s3_key_id = get_input('S3 key ID: ')
     s3_key_secret = get_input('S3 key secret (not echoed): ', hide_input=True)
 
-    config = config.Config(s3_endpoint,
-                           s3_region,
-                           s3_bucket,
-                           s3_key_id,
-                           s3_key_secret)
+    cfg = config.Config(s3_endpoint,
+                        s3_region,
+                        s3_bucket,
+                        s3_key_id,
+                        s3_key_secret)
+
+    config.save(cfg)
 
 
 @cli.command(name='clean')
