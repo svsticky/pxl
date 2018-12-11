@@ -22,7 +22,7 @@ def cli():
 @click.option('--force', is_flag=True, default=False)
 def init_cmd(force: bool):
     """Initialize pxl configuration"""
-    if config.is_initialized():
+    if config.is_initialized() and not force:
         print('pxl is already initiated. Add `--force` to override.')
         sys.exit(1)
 
