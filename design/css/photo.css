@@ -58,27 +58,25 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 6rem;
+  font-size: 4rem;
   color: var(--grey-lightest);
   -webkit-transition: background-color 0.2s;
 }
 
 .nav:hover {
-  font-size: 8rem;
+  background-color: var(--grey-darkest);
+}
+
+.nav.disabled {
+  background-color: var(--grey-lightest);
+  color: var(--grey-main);
+  cursor: not-allowed;
 }
 
 #left {
   left: 0px;
 }
 
-#left:hover {
-  padding-left: 30px;
-}
-
 #right {
   right: 0px;
-}
-
-#right:hover {
-  padding-right: 30px;
 }

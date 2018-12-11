@@ -12,6 +12,8 @@
 <body>
   {% if img_prev %}
   <a href="/{{ album_name }}/{{ img_prev.remote_uuid }}" id="left" class="nav">&#10094;</a>
+  {% else %}
+  <a href="#" id="left" class="nav disabled">&#10094;</a>
   {% endif %}
   <div class="photo-container">
     <div class="photo">
@@ -22,6 +24,8 @@
   </div>
   {% if img_next %}
   <a href="/{{ album_name }}/{{ img_next.remote_uuid }}" id="right" class="nav">&#10095;</a>
+  {% else %}
+  <a href="#" id="right" class="nav disabled">&#10095;</a>
   {% endif %}
 </body>
 </html>
