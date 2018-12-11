@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import datetime
 import json
+import locale
 import uuid
 import sys
 
@@ -31,9 +32,29 @@ class Image:
 
 @dataclass
 class Album:
+    created: datetime.datetime
     images: List[Image]
     name_display: str
     name_nav: str
+
+    @property
+    def created_human(self):
+        # We need to set the locale, because of course Python uses
+        # this kind of braindamage instead of accepting a parameter
+        # to the format function... Not thread safe of course because
+        # of the locale API. Fun read here: https://github.com/
+        # mpv-player/mpv/commit/1e70e82baa9193f6f027338b0fab0f5078971fbe
+        default_locale = locale.getlocale(locale.LC_TIME)
+        locale.setlocale(locale.LC_TIME, 'en_US.UTF-8')
+
+        format_str = '%b %d, %Y'  # Ex: Jan 25, 2018
+        res = self.created.strftime(format_str)
+
+        # Set back the default locale.
+        locale.setlocale(locale.LC_TIME, default_locale)
+
+        return res
+
 
     @classmethod
     def from_json(cls, json):
@@ -42,7 +63,8 @@ class Album:
             name_nav = json['name_nav']
             return cls(images=list(map(Image.from_json, json['images'])),
                        name_display=name_display,
-                       name_nav=name_nav)
+                       name_nav=name_nav,
+                       created=datetime.datetime.fromisoformat(json['created']))
         except KeyError:
             return None
 
@@ -51,11 +73,13 @@ class Album:
             'images': list(map(lambda image: image.to_json(), self.images)),
             'name_nav': self.name_nav,
             'name_display': self.name_display,
+            'created': self.created.isoformat(timespec='seconds'),
         }
 
     def add_image(self, image: Image) -> Album:
         return Album(images=self.images + [image],
                      name_display=self.name_display,
+                     created=self.created,
                      name_nav=self.name_nav)
 
 

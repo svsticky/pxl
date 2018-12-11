@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" type="text/css" href="/css/normalize.css">
+  <link rel="stylesheet" type="text/css" href="/css/theme.css">
+  <link rel="stylesheet" type="text/css" href="/css/photo.css">
+  <script src="/js/photo.js" defer></script>
+  <title></title>
+</head>
+<body>
+  {% if img_prev %}
+  <a href="/{{ album_name }}/{{ img_prev.remote_uuid }}" id="left" class="nav">&lt;</a>
+  {% endif %}
+  <div class="photo-container">
+    <div class="photo">
+      <img src="{{ img_baseurl }}/{{ img.remote_uuid }}.jpg">
+      <div class="album-text"><a href="overview.html">Sticky gaat paardrijden</a></div>
+    </div>
+      <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ">Click here to download</a>
+  </div>
+  {% if img_next %}
+  <a href="/{{ album_name }}/{{ img_next.remote_uuid }}" id="right" class="nav">&gt;</a>
+  {% endif %}
+</body>
+</html>

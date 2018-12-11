@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" type="text/css" href="/css/normalize.css">
+  <link rel="stylesheet" type="text/css" href="/css/theme.css">
+  <link rel="stylesheet" type="text/css" href="/css/index.css">
+  <title></title>
+</head>
+<body>
+  <div class="content-container">
+    <div class="grid-container">
+      {% for album in overview.albums %}
+      <a href="/{{ album.name_nav }}/" class="album">
+        <h1 class="album-title">{{ album.name_display }}</h1>
+        <img src="{{ img_baseurl }}/{{ album.images[0].remote_uuid }}.jpg" alt="picture" class="album-cover">
+        <span class="album-annotation">Uploaded on {{ album.created_human }}</span>
+      </a>
+      {% endfor %}
+    </div>
+  </div>
+</body>
+</html>
