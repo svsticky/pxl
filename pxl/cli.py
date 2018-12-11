@@ -122,6 +122,7 @@ def upload_cmd(dir_name: str, force: bool) -> None:
 @cli.command('build')
 def build_cmd():
     """Build a static site based on current state."""
+    print('Building site...')
     # TODO: parameterize
     output_dir = Path.cwd() / 'build'
     design_dir = Path.cwd() / 'design'
@@ -144,6 +145,7 @@ def build_cmd():
                        output_dir=output_dir,
                        template_dir=design_dir,
                        bucket_puburl=bucket_puburl)
+    print('Done.')
 
 
 def get_input(
