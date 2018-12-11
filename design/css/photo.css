@@ -64,14 +64,21 @@
 }
 
 .nav:hover {
-  background-color: var(--grey-darkest);
+  font-size: 8rem;
 }
-
 
 #left {
   left: 0px;
 }
 
+#left:hover {
+  padding-left: 30px;
+}
+
 #right {
   right: 0px;
+}
+
+#right:hover {
+  padding-right: 30px;
 }

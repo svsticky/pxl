@@ -11,7 +11,7 @@
 </head>
 <body>
   {% if img_prev %}
-  <a href="/{{ album_name }}/{{ img_prev.remote_uuid }}" id="left" class="nav">&lt;</a>
+  <a href="/{{ album_name }}/{{ img_prev.remote_uuid }}" id="left" class="nav">&#10094;</a>
   {% endif %}
   <div class="photo-container">
     <div class="photo">
@@ -21,7 +21,7 @@
       <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ">Click here to download</a>
   </div>
   {% if img_next %}
-  <a href="/{{ album_name }}/{{ img_next.remote_uuid }}" id="right" class="nav">&gt;</a>
+  <a href="/{{ album_name }}/{{ img_next.remote_uuid }}" id="right" class="nav">&#10095;</a>
   {% endif %}
 </body>
 </html>
