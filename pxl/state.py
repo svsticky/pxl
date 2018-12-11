@@ -41,7 +41,9 @@ class Album:
     def created_human(self):
         # We need to set the locale, because of course Python uses
         # this kind of braindamage instead of accepting a parameter
-        # to the format function... Not thread safe of course.
+        # to the format function... Not thread safe of course because
+        # of the locale API. Fun read here: https://github.com/
+        # mpv-player/mpv/commit/1e70e82baa9193f6f027338b0fab0f5078971fbe
         default_locale = locale.getlocale(locale.LC_TIME)
         locale.setlocale(locale.LC_TIME, 'en_US.UTF-8')
 
