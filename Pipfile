@@ -8,6 +8,7 @@ name = "pypi"
 click = "*"
 pyyaml = "*"
 "jinja2" = "*"
+python-resize-image = "*"
 
 [dev-packages]
 mypy = "*"
