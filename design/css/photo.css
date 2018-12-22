@@ -17,8 +17,8 @@ body {
 @media screen and (orientation: landscape) {
   body {
     grid:
-      [row1-start] "prev photo next" 1fr [row1-end]
-      [row2-start] "prev actions next" 50px [row2-end]
+      [row1-start] "prev photo photo next" 1fr [row1-end]
+      [row2-start] "prev actions-l actions-r next" 50px [row2-end]
       / 10% auto 10%;
   }
 }
@@ -27,7 +27,7 @@ body {
   body {
     grid:
       [row1-start] "photo photo" auto [row1-end]
-      [row2-start] "actions actions" 50px [row2-end]
+      [row2-start] "actions-l actions-r" 50px [row2-end]
       [row3-start] "prev next" 1fr [row3-end]
       / 50% 50%;
   }
@@ -57,8 +57,15 @@ body {
   grid-area: actions;
   display: flex;
   align-items: center;
-  flex-direction: row-reverse;
   padding: 0 20px;
+}
+
+.photo-actions.left {
+  grid-area: actions-l;
+}
+.photo-actions.right {
+  grid-area: actions-r;
+  flex-direction: row-reverse;
 }
 
 .photo-actions a {
@@ -83,6 +90,14 @@ body {
   display: inline-block;
   color: var(--grey-lightest);
   -webkit-transition: color 0.2s;
+}
+
+.photo-actions .back-to-album:hover svg {
+  fill: var(--prim-main);
+}
+
+.photo-actions .back-to-album:hover .text {
+  color: var(--prim-main);
 }
 
 .photo-actions .download:hover svg {
