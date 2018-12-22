@@ -7,6 +7,12 @@
   <link rel="stylesheet" type="text/css" href="/css/theme.css">
   <link rel="stylesheet" type="text/css" href="/css/photo.css">
   <script src="/js/photo.js" defer></script>
+  {% if img_prev %}
+  <link rel="prefetch" href="{{ img_baseurl }}/{{ img_prev.remote_uuid }}.jpg">
+  {% endif %}
+  {% if img_next %}
+  <link rel="prefetch" href="{{ img_baseurl }}/{{ img_next.remote_uuid }}.jpg">
+  {% endif %}
   <title>pxl</title>
 </head>
 <body>
