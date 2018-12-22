@@ -146,12 +146,23 @@ body {
 
 .nav.left {
   grid-area: prev;
-  border-right: 1px solid var(--grey-lightest);
 }
-
 .nav.right {
   grid-area: next;
-  border-left: 1px solid var(--grey-lightest);
+}
+
+/* On the portrait layout, we need a way to differentiate between
+ * the two navigation buttons, otherwise it is a big black blob
+ * and people are unsure where to click.
+ */
+@media screen and (orientation: portrait) {
+  .nav.left {
+    border-right: 1px solid var(--grey-lightest);
+  }
+
+  .nav.right {
+    border-left: 1px solid var(--grey-lightest);
+  }
 }
 
 /* Navigation colors and interactivity */
