@@ -12,7 +12,9 @@
 <body>
   {% if img_prev %}
   <div class="nav left">
-    <a title="Prev image" href="/{{ album_name }}/{{ img_prev.remote_uuid }}">&#10094;</a>
+    <a title="Prev image"
+       id="prev"
+       href="/{{ album_name }}/{{ img_prev.remote_uuid }}">&#10094;</a>
   </div>
   {% else %}
   <div class="nav left disabled">
@@ -30,7 +32,9 @@
 
   {% if img_next %}
   <div class="nav right">
-    <a title="Next image" href="/{{ album_name }}/{{ img_next.remote_uuid }}">&#10095;</a>
+    <a title="Next image"
+       id="next"
+       href="/{{ album_name }}/{{ img_next.remote_uuid }}">&#10095;</a>
   </div>
   {% else %}
   <div class="nav right disabled">
