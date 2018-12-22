@@ -72,6 +72,7 @@ body {
   display: flex;
   align-items: center;
   padding: 0 20px;
+  border-top: 1px solid var(--grey-main)
 }
 
 .photo-actions.left {
