@@ -28,7 +28,7 @@ body {
     grid:
       [row1-start] "photo photo" auto [row1-end]
       [row2-start] "actions-l actions-r" 50px [row2-end]
-      [row3-start] "prev next" 1fr [row3-end]
+      [row3-start] "prev next" 200px [row3-end]
       / 50% 50%;
   }
 }
@@ -50,6 +50,12 @@ body {
 .photo > img {
   max-width: 100%;
   max-height: calc(100vh - 50px);
+}
+
+@media screen and (orientation: portrait) {
+  .photo > img {
+    max-height: calc(100vh - 250px);
+  }
 }
 
 /* When photo's don't really fit the screen, we don't want to upscale.
