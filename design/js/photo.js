@@ -8,9 +8,13 @@ const next = document.getElementById("next");
 
 // KeyPress -> Maybe ClickEvent
 document.onkeydown = (ev) => {
-   switch(ev.keyCode)
-   {
-     case LEFT_ARROW: prev.click(); break;
-     case RIGHT_ARROW: next.click(); break;
-   }
+  switch(ev.keyCode)
+  {
+    case LEFT_ARROW:
+      if (prev != null) { prev.click(); }
+      break;
+    case RIGHT_ARROW:
+      if (next != null) { next.click(); }
+      break;
+  }
 }
