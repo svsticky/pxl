@@ -33,6 +33,8 @@ body {
   }
 }
 
+/* Photo positioning and sizing */
+
 .photo {
   grid-area: photo;
 }
@@ -40,6 +42,50 @@ body {
 .photo > img {
   width: 100%;
   height: auto;
+}
+
+/* When photo's don't really fit the screen, we don't want to upscale.
+ * We also don't want a jarrying white background.
+ */
+.photo {
+  background: var(--grey-main);
+}
+
+/* Actions */
+
+.photo-actions {
+  grid-area: actions;
+  display: flex;
+  align-items: center;
+  flex-direction: row-reverse;
+  padding: 0 20px;
+}
+
+.photo-actions a {
+  text-decoration: none;
+  padding: 0 5px;
+}
+
+.photo-actions svg {
+  -webkit-transition: fill 0.2s;
+  fill: var(--grey-lightest);
+}
+
+.photo-actions a span {
+  display: inline-block;
+  width: 32px;
+}
+
+.photo-actions .download:hover svg {
+  fill: var(--prim-main);
+}
+
+.photo-actions .report:hover svg {
+  fill: var(--sec-main);
+}
+
+.photo-actions {
+  background: var(--grey-darkest);
 }
 
 /* Navigation positioning and sizing */
@@ -69,10 +115,12 @@ body {
 
 .nav.left {
   grid-area: prev;
+  border-right: 1px solid var(--grey-lightest);
 }
 
 .nav.right {
   grid-area: next;
+  border-left: 1px solid var(--grey-lightest);
 }
 
 /* Navigation colors and interactivity */
