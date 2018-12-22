@@ -42,9 +42,14 @@ body {
   justify-content: center;
 }
 
+/* Limit the height so there is always room for the actions bar.
+ * We don't really have something for large portrait photos yet,
+ * we might need that later if there are pages where we loose
+ * the buttons in the portrait layout.
+ */
 .photo > img {
   max-width: 100%;
-  height: auto;
+  max-height: calc(100vh - 50px);
 }
 
 /* When photo's don't really fit the screen, we don't want to upscale.
