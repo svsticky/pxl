@@ -190,10 +190,15 @@ body {
 .nav a {
   color: var(--grey-lightest);
   text-decoration: none;
+  -webkit-transition: color 0.2s;
 }
 
 .nav:hover {
-  background-color: var(--grey-darkest);
+  background-color: var(--grey-dark);
+}
+
+.nav:hover a {
+  color: var(--prim-main);
 }
 
 .nav.disabled {
