@@ -1,16 +1,14 @@
-.photo-container {
-  width: 100vw;
+body {
+  display: grid;
   height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  grid:
+    [row1-start] "left photo right" 1fr [row1-end]
+    [row2-start] "left actions right" 50px [row2-end]
+    / 10% auto 10%;
 }
 
 .photo {
-  width: 80%;
-  position: relative;
-  width: 50%;
+  grid-area: photo;
 }
 
 .photo > img {
@@ -18,49 +16,38 @@
   height: auto;
 }
 
-.album-text {
-  position: absolute;
-  top: 8px;
-  right: 16px;
-  color: white;
-  font-size: 2rem;
-  padding: 10px;
-  visibility: hidden;
-  opacity: 0;
-  text-shadow: 2px 2px rgba(0,0,0,0.7);
-  -webkit-transition: visibility 0.5s, opacity 0.3s, border 0.1s;
-}
-
-.album-text > a {
-  color: white;
-  text-decoration: none;
-}
-
-.photo:hover .album-text {
-  visibility: visible;
-  opacity: 1;
-}
-
-.album-text:hover {
-  border-bottom: 3px solid white;
-}
-
-/* ----- NAVIGATION SECTION ------- */
+/* Navigation positioning and sizing */
 
 .nav {
-  position: absolute;
-  top: 0px;
-  width: 10%;
-  height: 100vh;
-  background-color: var(--grey-main);
-  z-index: 9999;
-  text-decoration: none;
-  display: flex;
-  justify-content: center;
-  align-items: center;
   font-size: 4rem;
-  color: var(--grey-lightest);
+}
+
+.nav a {
+  display: inline-block;
+  height: 100%;
+  width: 100%;
+  text-align: center;
+  line-height: 100vh;
+}
+
+.nav.left {
+  grid-area: left;
+}
+
+.nav.right {
+  grid-area: right;
+}
+
+/* Navigation colors and interactivity */
+
+.nav {
+  background-color: var(--grey-main);
   -webkit-transition: background-color 0.2s;
+}
+
+.nav a {
+  color: var(--grey-lightest);
+  text-decoration: none;
 }
 
 .nav:hover {
@@ -69,14 +56,9 @@
 
 .nav.disabled {
   background-color: var(--grey-lightest);
-  color: var(--grey-main);
   cursor: not-allowed;
 }
 
-#left {
-  left: 0px;
-}
-
-#right {
-  right: 0px;
+.nav.disabled a {
+  color: var(--grey-main);
 }

@@ -7,25 +7,35 @@
   <link rel="stylesheet" type="text/css" href="/css/theme.css">
   <link rel="stylesheet" type="text/css" href="/css/photo.css">
   <script src="/js/photo.js" defer></script>
-  <title></title>
+  <title>pxl</title>
 </head>
 <body>
   {% if img_prev %}
-  <a href="/{{ album_name }}/{{ img_prev.remote_uuid }}" id="left" class="nav">&#10094;</a>
-  {% else %}
-  <a href="#" id="left" class="nav disabled">&#10094;</a>
-  {% endif %}
-  <div class="photo-container">
-    <div class="photo">
-      <img src="{{ img_baseurl }}/{{ img.remote_uuid }}.jpg">
-      <div class="album-text"><a href="overview.html">Sticky gaat paardrijden</a></div>
-    </div>
-      <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ">Click here to download</a>
+  <div class="nav left">
+    <a title="Prev image" href="/{{ album_name }}/{{ img_prev.remote_uuid }}">&#10094;</a>
   </div>
-  {% if img_next %}
-  <a href="/{{ album_name }}/{{ img_next.remote_uuid }}" id="right" class="nav">&#10095;</a>
   {% else %}
-  <a href="#" id="right" class="nav disabled">&#10095;</a>
+  <div class="nav left disabled">
+    <a>&#10094;</a>
+  </div>
+  {% endif %}
+
+  <div class="photo">
+    <img src="{{ img_baseurl }}/{{ img.remote_uuid }}.jpg">
+  </div>
+  <div class="photo-actions">
+    <a href="#">Download</a>
+    <a href="#">Report</a>
+  </div>
+
+  {% if img_next %}
+  <div class="nav right">
+    <a title="Next image" href="/{{ album_name }}/{{ img_next.remote_uuid }}">&#10095;</a>
+  </div>
+  {% else %}
+  <div class="nav right disabled">
+    <a>&#10095;</a>
+  </div>
   {% endif %}
 </body>
 </html>
