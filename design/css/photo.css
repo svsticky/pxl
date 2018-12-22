@@ -63,7 +63,9 @@ body {
 
 .photo-actions a {
   text-decoration: none;
-  padding: 0 5px;
+  padding: 0 10px;
+  display: flex;
+  align-items: center;
 }
 
 .photo-actions svg {
@@ -71,17 +73,31 @@ body {
   fill: var(--grey-lightest);
 }
 
-.photo-actions a span {
+.photo-actions a .icon {
   display: inline-block;
   width: 32px;
+}
+
+.photo-actions a .text {
+  padding-left: 5px;
+  display: inline-block;
+  color: var(--grey-lightest);
+  -webkit-transition: color 0.2s;
 }
 
 .photo-actions .download:hover svg {
   fill: var(--prim-main);
 }
 
+.photo-actions .download:hover .text {
+  color: var(--prim-main);
+}
+
 .photo-actions .report:hover svg {
   fill: var(--sec-main);
+}
+.photo-actions .report:hover .text {
+  color: var(--sec-main);
 }
 
 .photo-actions {
