@@ -1,10 +1,36 @@
+/* We support two layouts for the photo detail page, depending
+ * on aspect ratio of the device which views the photo.
+ *
+ * For landscape devices, we position the previous and next image
+ * buttons on the left and right of the screen. On portrait devices,
+ * we position these buttons below the image.
+ *
+ * CSS grid makes this almost impossibly easy.
+ */
 body {
   display: grid;
-  height: 100vh;
-  grid:
-    [row1-start] "left photo right" 1fr [row1-end]
-    [row2-start] "left actions right" 50px [row2-end]
-    / 10% auto 10%;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+}
+
+@media screen and (orientation: landscape) {
+  body {
+    grid:
+      [row1-start] "prev photo next" 1fr [row1-end]
+      [row2-start] "prev actions next" 50px [row2-end]
+      / 10% auto 10%;
+  }
+}
+
+@media screen and (orientation: portrait) {
+  body {
+    grid:
+      [row1-start] "photo photo" auto [row1-end]
+      [row2-start] "actions actions" 50px [row2-end]
+      [row3-start] "prev next" 1fr [row3-end]
+      / 50% 50%;
+  }
 }
 
 .photo {
@@ -22,20 +48,31 @@ body {
   font-size: 4rem;
 }
 
+/* The link needs to be as big as the div. And both horizontally
+ * and vertically centered on initial page load. The before hack
+ * is from https://stackoverflow.com/a/33221185 and allows the
+ * vertical centering without constant line-height on the `a`.
+ */
+.nav a:before {
+  content: "";
+  display: inline-block;
+  height: 100%;
+  vertical-align: middle;
+}
+
 .nav a {
   display: inline-block;
   height: 100%;
   width: 100%;
   text-align: center;
-  line-height: 100vh;
 }
 
 .nav.left {
-  grid-area: left;
+  grid-area: prev;
 }
 
 .nav.right {
-  grid-area: right;
+  grid-area: next;
 }
 
 /* Navigation colors and interactivity */
