@@ -19,7 +19,7 @@ body {
     grid:
       [row1-start] "prev photo photo next" 1fr [row1-end]
       [row2-start] "prev actions-l actions-r next" 50px [row2-end]
-      / 10% auto 10%;
+      / 10% auto auto 10%;
   }
 }
 
