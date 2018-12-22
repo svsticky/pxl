@@ -37,10 +37,13 @@ body {
 
 .photo {
   grid-area: photo;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .photo > img {
-  width: 100%;
+  max-width: 100%;
   height: auto;
 }
 
@@ -48,7 +51,7 @@ body {
  * We also don't want a jarrying white background.
  */
 .photo {
-  background: var(--grey-main);
+  background: var(--grey-darkest);
 }
 
 /* Actions */
