@@ -9,6 +9,19 @@
   <title></title>
 </head>
 <body>
+  <nav>
+    <a class="home-link" href="/">
+      <div class="icon">
+        <svg viewBox="0 0 512 512">
+          <path d="M208 448V320h96v128h97.6V256H464L256 64 48 256h62.4v192z"/>
+        </svg>
+      </div>
+    </a>
+    <div class="album-name">{{ album.name_display }}</div>
+    <div class="credits">
+      Built with <a href="https://github.com/svsticky/pxl">pxl</a>
+    </div>
+  </nav>
   <div class="album">
     {% for image in album.images %}
     <div class="photo">

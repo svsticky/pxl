@@ -17,7 +17,9 @@
   --grey-dark: #1F2324;
   --grey-darkest: #161C1F;
 
-  --white: #fefefe;
+  --white-main: #B4DAEB;
+  --white-lightest: #E3F4FB;
+  --white-light: #CCE8F4;
 }
 
 body {

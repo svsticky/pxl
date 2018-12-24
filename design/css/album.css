@@ -1,9 +1,35 @@
 body {
-  padding: 1em;
   background: var(--grey-main);
 }
 
+nav {
+  background: var(--grey-darkest);
+  color: var(--grey-lightest);
+  padding: 1em;
+  display: flex;
+  align-items: center;
+}
+
+nav .icon {
+  display: inline-block;
+  width: 32px;
+  height: 32px;
+  fill: var(--grey-lightest);
+  -webkit-transition: fill 0.2s;
+}
+
+nav .home-link:hover .icon {
+  fill: var(--prim-main);
+}
+
+nav .album-name {
+  flex: 1;
+  color: var(--white-main);
+  text-align: center;
+}
+
 .album {
+  padding: 1em;
   columns: 1;
   column-gap: 1em;
 }
