@@ -28,7 +28,7 @@ body {
     grid:
       [row1-start] "photo photo" auto [row1-end]
       [row2-start] "actions-l actions-r" 50px [row2-end]
-      [row3-start] "prev next" 200px [row3-end]
+      [row3-start] "prev next" 150px [row3-end]
       / 50% 50%;
   }
 }
@@ -72,7 +72,8 @@ body {
   display: flex;
   align-items: center;
   padding: 0 20px;
-  border-top: 1px solid var(--grey-main)
+  border-top: 1px solid var(--grey-main);
+  border-bottom: 1px solid var(--grey-main);
 }
 
 .photo-actions.left {
@@ -183,7 +184,7 @@ body {
 /* Navigation colors and interactivity */
 
 .nav {
-  background-color: var(--grey-main);
+  background-color: var(--grey-darkest);
   -webkit-transition: background-color 0.2s;
 }
 
@@ -202,10 +203,9 @@ body {
 }
 
 .nav.disabled {
-  background-color: var(--grey-lightest);
-  cursor: not-allowed;
+  background-color: var(--grey-darkest);
 }
 
 .nav.disabled a {
-  color: var(--grey-main);
+  color: var(--grey-darkest);
 }
