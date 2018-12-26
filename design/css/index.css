@@ -2,7 +2,7 @@
   background: var(--grey-main);
   display: grid;
   grid-template-columns: repeat(1, 1fr);
-  grid-template-rows: repeat(auto-fill, 250px);
+  grid-template-rows: repeat(auto-fill, 300px);
   grid-row-gap: 1em;
   grid-column-gap: 1em;
   padding: 1em;
@@ -24,22 +24,39 @@
 .album {
   max-height: 100%;
   text-decoration: none;
+  position: relative;
+  overflow: hidden;
+  border-radius: 5px;
 }
 
 .album .album-cover {
-  border-radius: 5px 5px 0 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
+  -webkit-transition: transform 0.2s;
 }
 
 .album .album-title {
-  background: var(--grey-lightest);
+  background: linear-gradient(rgba(22, 28, 31, 0), rgba(22, 28, 31, 0.6) 50%);
   margin: 0;
-  padding: 1em;
-  border-radius: 0 0 5px 5px;
+  padding: 5em 1em 1em 1em;
   text-align: center;
   font-size: 1rem;
   color: var(--white-light);
   font-weight: normal;
+  z-index: 5;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  text-shadow: 0px 0px 5px var(--grey-darkest);
+  -webkit-transition: color 0.2s;
+}
+
+.album:hover .album-title {
+  color: var(--prim-main);
+}
+
+.album:hover .album-cover {
+  transform: scale(1.1);
 }
