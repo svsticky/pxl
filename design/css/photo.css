@@ -48,13 +48,15 @@ body {
  * the buttons in the portrait layout.
  */
 .photo > img {
-  max-width: 100%;
-  max-height: calc(100vh - 50px);
+  max-width: calc(100% - 32px);
+  max-height: calc(100vh - 50px - 32px);
+  padding: 16px;
+  border-radius: 25px;
 }
 
 @media screen and (orientation: portrait) {
   .photo > img {
-    max-height: calc(100vh - 250px);
+    max-height: calc(100vh - 232px);
   }
 }
 
