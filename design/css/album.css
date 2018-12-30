@@ -57,12 +57,27 @@ nav .album-name {
 
 .photo {
   margin-bottom: 1em;
-  display: inline-block;
+  /* Not honoured by Chrome while animating the scale transform */
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+/* This is required to fix an annoying glitch with the transform
+ * on hover. Without the line-height property, the anchor tag has
+ * some height of it's own. This leads to an annoying shift of the
+ * photo: it doesn't seem to zoom while being completely static.
+ */
+.photo a {
+  display: block;
+  line-height: 0;
 }
 
 .photo img {
   width: 100%;
-  height: auto;
-  border-radius: 5px;
-  -webkit-transition: width 0.2s;
+  object-fit: cover;
+  -webkit-transition: transform 0.2s;
+}
+
+.photo:hover img {
+  transform: scale(1.1);
 }
