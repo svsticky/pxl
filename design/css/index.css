@@ -37,7 +37,8 @@
 }
 
 .album .album-title {
-  background: linear-gradient(rgba(22, 28, 31, 0), rgba(22, 28, 31, 0.6) 50%);
+  background: linear-gradient(to bottom, rgba(0,0,0,0) 0%,
+                              rgba(0,0,0,0.5) 65%, rgba(0,0,0,0.59) 100%);
   margin: 0;
   padding: 5em 1em 1em 1em;
   text-align: center;
