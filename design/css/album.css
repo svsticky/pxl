@@ -35,6 +35,12 @@ nav .album-name {
   column-gap: 1em;
 }
 
+@media screen and (min-width: 400px) {
+  .album {
+    columns: 2;
+  }
+}
+
 @media screen and (min-width: 800px) {
   .album {
     columns: 3;
@@ -44,6 +50,8 @@ nav .album-name {
 @media screen and (min-width: 1200px) {
   .album {
     columns: 5;
+    max-width: 1920px;
+    margin: 0 auto;
   }
 }
 
