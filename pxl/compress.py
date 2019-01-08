@@ -4,7 +4,6 @@ import tempfile
 
 WIDTHS = [1600, 800]
 
-
 def compress_image(local_filename: Path) -> [Path]:
     """Compresses the image to different sizes and saves them to /tmp, returns a list of paths"""
 
