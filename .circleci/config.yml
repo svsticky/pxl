@@ -4,9 +4,12 @@ jobs:
     working_directory: ~/pxl
     docker:
       - image: python:3.7.2-slim-stretch
-        environment: {}
+        environment:
+
     steps:
       - checkout
+      # Fix the PATH, so pipenv install --user works
+      - run: echo "export PATH=$HOME/.local/bin:$PATH" >> $BASH_ENV
       - run:
           command: |
             pip install --user pipenv
