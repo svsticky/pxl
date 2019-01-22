@@ -1,30 +1,40 @@
 import tempfile
 
 from pathlib import Path
-from typing import List
+from typing import Dict
+
+from pxl import state
 
 from PIL import Image  # type: ignore
 
-WIDTHS = [1600, 800]
+
+def width_for_size(size: state.Size) -> int:
+    size_switch = {state.Size.display_w_1600: 1600, state.Size.thumbnail_w_400: 400}
+    return size_switch[size]
 
 
-def compress_image(local_filename: Path) -> List[Path]:
-    """Compresses the image to different sizes and saves them to /tmp, returns a list of paths"""
+def compress_image(local_filename: Path) -> Dict[state.Size, Path]:
+    """
+    Compresses the image to different sizes.
+    Returns a Dict of `state.Size`s to `Path`s in a temporary directory.
+    """
+    sizes_to_generate = [state.Size.thumbnail_w_400, state.Size.display_w_1600]
+    image_paths: Dict[state.Size, Path] = {}
+    tempdir = Path(tempfile.gettempdir())
 
-    image_paths = []
     with Image.open(local_filename, "r") as image:
-        # Copy the original image to temp
-        path = Path(tempfile.gettempdir()).joinpath(local_filename.name)
+        original_tmp_path = tempdir / local_filename.name
         image = image.convert("RGB")
-        image.save(path)
-        image_paths.append(path)
+        image.save(original_tmp_path)
+        image_paths[state.Size.original] = original_tmp_path
 
         # Get the original dimensions
         real_w, real_h = image.size
-        for w in WIDTHS:
+        for size_to_generate in sizes_to_generate:
             # Prevent upscaling
+            w = width_for_size(size_to_generate)
             if w >= real_w:
-                continue
+                image_paths[size_to_generate] = original_tmp_path
 
             # Copy original image
             scaled = image.copy()
@@ -39,6 +49,6 @@ def compress_image(local_filename: Path) -> List[Path]:
             scaled.save(scaled_path, image.format)
 
             # Add the path to the output list
-            image_paths.append(scaled_path)
+            image_paths[size_to_generate] = scaled_path
 
     return image_paths

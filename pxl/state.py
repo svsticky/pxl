@@ -7,8 +7,15 @@ import uuid
 import sys
 
 from dataclasses import dataclass
+from enum import Enum, auto
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
+
+
+class Size(Enum):
+    original = auto()
+    display_w_1600 = auto()
+    thumbnail_w_400 = auto()
 
 
 @dataclass
@@ -16,16 +23,25 @@ class Image:
     # The UUID derives the remote filename for the original, detail
     # and thumbnail versions of the image.
     remote_uuid: uuid.UUID
+    available_sizes: List[Size]
 
     @classmethod
     def from_json(cls, json):
         try:
-            return cls(remote_uuid=uuid.UUID(json["remote_uuid"]))
+            available_sizes = json.get("available_sizes", ["original"])
+            sizes_parsed = list(map(lambda x: Size[x], available_sizes))
+
+            return cls(
+                remote_uuid=uuid.UUID(json["remote_uuid"]), available_sizes=sizes_parsed
+            )
         except KeyError:
             return None
 
     def to_json(self):
-        return {"remote_uuid": self.remote_uuid.hex}
+        return {
+            "remote_uuid": self.remote_uuid.hex,
+            "avaialble_sizes": list(map(lambda x: x.name, self.available_sizes)),
+        }
 
 
 @dataclass

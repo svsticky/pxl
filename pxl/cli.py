@@ -87,6 +87,8 @@ def upload_cmd(dir_name: str, force: bool) -> None:
             print(e)
             sys.exit(1)
 
+        print(pxl_state)
+
         # Get existing album with this name for appending.
         album = pxl_state.get_album_by_name(album_name)
         if album:
@@ -116,8 +118,7 @@ def upload_cmd(dir_name: str, force: bool) -> None:
             if not entry.suffix.lower() in [".jpeg", ".jpg"]:
                 continue
 
-            uuid = upload.public_image(client, entry)
-            image = state.Image(remote_uuid=uuid)
+            image = upload.public_image_with_size(client, entry)
             album = album.add_image(image)
 
         pxl_state = pxl_state.add_or_replace_album(album)
