@@ -10,11 +10,12 @@ import uuid
 
 from contextlib import contextmanager
 from dataclasses import dataclass
-from enum import Enum
 from pathlib import Path
 from typing import Any, Dict, Iterator, Union, Optional
 
 import pxl.config as config
+import pxl.compress as compress
+import pxl.state as state
 
 
 @dataclass
@@ -91,26 +92,32 @@ def client(cfg: config.Config, *, break_lock: bool = False) -> Iterator[Client]:
             )
 
 
-def public_image(client: Client, local_filename: Path) -> uuid.UUID:
+def public_image_with_size(client: Client, local_filename: Path) -> state.Image:
+    file_uuid = uuid.uuid4()
+    extension = get_normalized_extension(local_filename)
+
+    local_scaled_files = compress.compress_image(local_filename)
+    for size, local_filename in local_scaled_files.items():
+        object_name = f"{file_uuid}{size.path_suffix}{extension}"
+        public_image(client, local_filename, object_name)
+
+    return state.Image(
+        remote_uuid=file_uuid, available_sizes=list(local_scaled_files.keys())
+    )
+
+
+def public_image(client: Client, local_filename: Path, object_name: str) -> None:
     """
     Upload a local image as world readable with a random UUID.
     """
-    file_uuid = uuid.uuid4()
-    extension = get_normalized_extension(local_filename)
-    object_name = f"{file_uuid}{extension}"
-
     print(f"Uploading {local_filename} as {object_name}")
-
     extra_args = {"ContentType": "image/jpeg", "ACL": "public-read"}
-
     client.boto.upload_file(
         Filename=str(local_filename),
         Bucket=client.cfg.s3_bucket,
         ExtraArgs=extra_args,
         Key=object_name,
     )
-
-    return file_uuid
 
 
 def get_json(client: Client, object_name: str):

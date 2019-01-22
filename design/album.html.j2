@@ -26,7 +26,7 @@
     {% for image in album.images %}
     <div class="photo">
       <a href="/{{ album.name_nav }}/{{ image.remote_uuid }}">
-        <img src="{{ img_baseurl }}/{{ image.remote_uuid }}.jpg">
+        <img src="{{ img_baseurl }}/{{ image.get_name("original") }}.jpg">
       </a>
     </div>
     {% endfor %}
