@@ -11,7 +11,7 @@ pyyaml = "*"
 Pillow = "*"
 
 [dev-packages]
-mypy = "*"
+mypy-mypyc = "*"
 black = "==18.9b0"
 
 [scripts]

@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "9c53da4392abaa9d0a90e652ba6bb6fc43641a6f6c772cdb8bddad9e8dc1119c"
+            "sha256": "43c0e6c78ef8e57c712d707b5218f56eca5387fe99289e1aa1c30880dc683fc7"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -210,20 +210,28 @@
             "index": "pypi",
             "version": "==7.0"
         },
-        "mypy": {
-            "hashes": [
-                "sha256:986a7f97808a865405c5fd98fae5ebfa963c31520a56c783df159e9a81e41b3e",
-                "sha256:cc5df73cc11d35655a8c364f45d07b13c8db82c000def4bd7721be13356533b4"
-            ],
-            "index": "pypi",
-            "version": "==0.660"
-        },
         "mypy-extensions": {
             "hashes": [
                 "sha256:37e0e956f41369209a3d5f34580150bcacfabaa57b33a15c0b25f4b5725e0812",
                 "sha256:b16cabe759f55e3409a7d231ebd2841378fb0c27a5d1994719e340e4f429ac3e"
             ],
             "version": "==0.4.1"
+        },
+        "mypy-mypyc": {
+            "hashes": [
+                "sha256:1fe12487a87e448347a171811269bd187f3e0982d546aa5eef2041f8f0f14389",
+                "sha256:2c8174f12cbe6e60d2b3071a4e1eb38b376df00b4080faf135c73d2a777d1bb0",
+                "sha256:33f507e897b21f61599b1dea7c01035d078ee07d1cb77bcb674959e0432ab8e2",
+                "sha256:4d2d59bb083780936de248ab5ecc60158dfbc21d0991d78a67e362fc256a906a",
+                "sha256:642a1812722ed6ebc84658a2548ff8b7b1550741b50cb1a7509b1ae0c8321ad3",
+                "sha256:6cea760018bc8947cf0dd93a64e1d34cf8805d0759086f133bed98e9722bf32d",
+                "sha256:b90fad2dec36c6c178ebf0fdd19de96defc7dcf9ddeb1aada974435d30e56a44",
+                "sha256:cc8c4b688deeb3fc7cd37ad09d627dd82d9406666d91e7df2d14cc0eed1b0af3",
+                "sha256:ce301341bba441af804a4b5016f940ef28de1089f90e8fce71617527b5dd68ac",
+                "sha256:e42d7e8aa9e05e20e8f58712b62759ed22effe83b77504d49289bff32edcc60b"
+            ],
+            "index": "pypi",
+            "version": "==0.660"
         },
         "toml": {
             "hashes": [
