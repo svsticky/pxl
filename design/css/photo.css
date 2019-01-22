@@ -1,84 +1,213 @@
-.photo-container {
-  width: 100vw;
+/* We support two layouts for the photo detail page, depending
+ * on aspect ratio of the device which views the photo.
+ *
+ * For landscape devices, we position the previous and next image
+ * buttons on the left and right of the screen. On portrait devices,
+ * we position these buttons below the image.
+ *
+ * CSS grid makes this almost impossibly easy.
+ */
+body {
+  display: grid;
   height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  margin: 0;
+  padding: 0;
 }
+
+@media screen and (orientation: landscape) {
+  body {
+    grid:
+      [row1-start] "prev photo photo next" 1fr [row1-end]
+      [row2-start] "prev actions-l actions-r next" 50px [row2-end]
+      / 10% auto auto 10%;
+  }
+}
+
+@media screen and (orientation: portrait) {
+  body {
+    grid:
+      [row1-start] "photo photo" auto [row1-end]
+      [row2-start] "actions-l actions-r" 50px [row2-end]
+      [row3-start] "prev next" 150px [row3-end]
+      / 50% 50%;
+  }
+}
+
+/* Photo positioning and sizing */
 
 .photo {
-  width: 80%;
-  position: relative;
-  width: 50%;
+  grid-area: photo;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
+/* Limit the height so there is always room for the actions bar.
+ * We don't really have something for large portrait photos yet,
+ * we might need that later if there are pages where we loose
+ * the buttons in the portrait layout.
+ */
 .photo > img {
-  width: 100%;
-  height: auto;
+  max-width: calc(100% - 32px);
+  max-height: calc(100vh - 50px - 32px);
+  padding: 16px;
+  border-radius: 25px;
 }
 
-.album-text {
-  position: absolute;
-  top: 8px;
-  right: 16px;
-  color: white;
-  font-size: 2rem;
-  padding: 10px;
-  visibility: hidden;
-  opacity: 0;
-  text-shadow: 2px 2px rgba(0,0,0,0.7);
-  -webkit-transition: visibility 0.5s, opacity 0.3s, border 0.1s;
+@media screen and (orientation: portrait) {
+  .photo > img {
+    max-height: calc(100vh - 232px);
+  }
 }
 
-.album-text > a {
-  color: white;
+/* When photo's don't really fit the screen, we don't want to upscale.
+ * We also don't want a jarrying white background.
+ */
+.photo {
+  background: var(--grey-darkest);
+}
+
+/* Actions */
+
+.photo-actions {
+  grid-area: actions;
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  border-top: 1px solid var(--grey-main);
+  border-bottom: 1px solid var(--grey-main);
+}
+
+.photo-actions.left {
+  grid-area: actions-l;
+}
+.photo-actions.right {
+  grid-area: actions-r;
+  flex-direction: row-reverse;
+}
+
+.photo-actions a {
   text-decoration: none;
+  padding: 0 10px;
+  display: flex;
+  align-items: center;
 }
 
-.photo:hover .album-text {
-  visibility: visible;
-  opacity: 1;
+.photo-actions svg {
+  -webkit-transition: fill 0.2s;
+  fill: var(--grey-lightest);
 }
 
-.album-text:hover {
-  border-bottom: 3px solid white;
+.photo-actions a .icon {
+  display: inline-block;
+  width: 32px;
 }
 
-/* ----- NAVIGATION SECTION ------- */
+.photo-actions a .text {
+  padding-left: 5px;
+  display: inline-block;
+  color: var(--grey-lightest);
+  -webkit-transition: color 0.2s;
+}
+
+.photo-actions .back-to-album:hover svg {
+  fill: var(--prim-main);
+}
+
+.photo-actions .back-to-album:hover .text {
+  color: var(--prim-main);
+}
+
+.photo-actions .download:hover svg {
+  fill: var(--prim-main);
+}
+
+.photo-actions .download:hover .text {
+  color: var(--prim-main);
+}
+
+.photo-actions .report:hover svg {
+  fill: var(--sec-main);
+}
+.photo-actions .report:hover .text {
+  color: var(--sec-main);
+}
+
+.photo-actions {
+  background: var(--grey-darkest);
+}
+
+/* Navigation positioning and sizing */
 
 .nav {
-  position: absolute;
-  top: 0px;
-  width: 10%;
-  height: 100vh;
-  background-color: var(--grey-main);
-  z-index: 9999;
-  text-decoration: none;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 6rem;
-  color: var(--grey-lightest);
+  font-size: 4rem;
+}
+
+/* The link needs to be as big as the div. And both horizontally
+ * and vertically centered on initial page load. The before hack
+ * is from https://stackoverflow.com/a/33221185 and allows the
+ * vertical centering without constant line-height on the `a`.
+ */
+.nav a:before {
+  content: "";
+  display: inline-block;
+  height: 100%;
+  vertical-align: middle;
+}
+
+.nav a {
+  display: inline-block;
+  height: 100%;
+  width: 100%;
+  text-align: center;
+}
+
+.nav.left {
+  grid-area: prev;
+}
+.nav.right {
+  grid-area: next;
+}
+
+/* On the portrait layout, we need a way to differentiate between
+ * the two navigation buttons, otherwise it is a big black blob
+ * and people are unsure where to click.
+ */
+@media screen and (orientation: portrait) {
+  .nav.left {
+    border-right: 1px solid var(--grey-lightest);
+  }
+
+  .nav.right {
+    border-left: 1px solid var(--grey-lightest);
+  }
+}
+
+/* Navigation colors and interactivity */
+
+.nav {
+  background-color: var(--grey-darkest);
   -webkit-transition: background-color 0.2s;
 }
 
+.nav a {
+  color: var(--grey-lightest);
+  text-decoration: none;
+  -webkit-transition: color 0.2s;
+}
+
 .nav:hover {
-  font-size: 8rem;
+  background-color: var(--grey-dark);
 }
 
-#left {
-  left: 0px;
+.nav:hover a {
+  color: var(--prim-main);
 }
 
-#left:hover {
-  padding-left: 30px;
+.nav.disabled {
+  background-color: var(--grey-darkest);
 }
 
-#right {
-  right: 0px;
-}
-
-#right:hover {
-  padding-right: 30px;
+.nav.disabled a {
+  color: var(--grey-darkest);
 }

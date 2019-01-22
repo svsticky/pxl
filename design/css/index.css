@@ -1,79 +1,63 @@
-:root {
-  --max-image-width: 400px;
-  --max-image-height: 400px;
-  --main-page-width: 80%;
+.albums {
+  background: var(--grey-main);
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  grid-template-rows: repeat(auto-fill, 300px);
+  grid-row-gap: 1em;
+  grid-column-gap: 1em;
+  padding: 1em;
+  min-height: 100vh;
 }
 
-/* Grid */
-.content-container {
-  width: 100%;
-  margin: 0px;
-  padding: 0px;
-  display: flex;
-  justify-content: center;
+@media screen and (min-width: 800px) {
+  .albums {
+    grid-template-columns: repeat(3, 1fr);
+  }
 }
 
-.grid-container {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-start;
-  width: var(--main-page-width);
+@media screen and (min-width: 1200px) {
+  .albums {
+    grid-template-columns: repeat(5, 1fr);
+  }
 }
-
-/* ---- ALBUM SECTION -----*/
 
 .album {
-  width: calc(100%/6);
-  display: flex;
-  flex-wrap: nowrap;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
-  padding: 20px;
-  margin: 20px;
-  background-color: white;
-  box-shadow: 0px 2px 3px rgba(0,0,0,.13) ,1px 2px 2px rgba(0,0,0,.1);
-  -webkit-transition: background-color 0.2s;
-  /* reset anchor tags */
+  max-height: 100%;
   text-decoration: none;
-  color: black;
+  position: relative;
+  overflow: hidden;
+  border-radius: 5px;
 }
 
-.album-title {
-  font-family: var(--album-title-font);
+.album .album-cover {
   width: 100%;
+  height: 100%;
+  object-fit: cover;
+  -webkit-transition: transform 0.2s;
+}
+
+.album .album-title {
+  background: linear-gradient(to bottom, rgba(0,0,0,0) 0%,
+                              rgba(0,0,0,0.5) 65%, rgba(0,0,0,0.59) 100%);
+  margin: 0;
+  padding: 5em 1em 1em 1em;
   text-align: center;
   font-size: 1rem;
+  color: var(--white-light);
+  font-weight: normal;
+  z-index: 5;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  text-shadow: 0px 0px 5px var(--grey-darkest);
+  -webkit-transition: color 0.2s;
 }
 
-.album-annotation {
-  text-decoration: none;
-  color: grey;
-  font-size: 0.9rem;
-  padding: 10px;
+.album:hover .album-title {
+  color: var(--prim-main);
 }
 
-.album-cover {
-  width: 100%;
-  height: auto;
-  max-width: var(--max-image-width);
-  max-height: auto;
-}
-
-.album:hover {
-  cursor: pointer;
-  background: var(--theme-dark-blue);
-  color: white;
-}
-
-@media screen and (max-width: 1200px) {
-  .album {
-    width: calc(100%/3);
-  }
-}
-
-@media screen and (max-width: 800px) {
-  .album {
-    width: 100%;
-  }
+.album:hover .album-cover {
+  transform: scale(1.1);
 }

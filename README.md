@@ -2,6 +2,8 @@
 
 An S3/DigitalOcean spaces photo management script.
 
+![Pxl Photo Viewer](./docs/photo-viewer.png)
+
 ## Documentation
 
 User documentation:

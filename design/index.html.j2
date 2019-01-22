@@ -9,16 +9,14 @@
   <title></title>
 </head>
 <body>
-  <div class="content-container">
-    <div class="grid-container">
-      {% for album in overview.albums %}
-      <a href="/{{ album.name_nav }}/" class="album">
-        <h1 class="album-title">{{ album.name_display }}</h1>
-        <img src="{{ img_baseurl }}/{{ album.images[0].remote_uuid }}.jpg" alt="picture" class="album-cover">
-        <span class="album-annotation">Uploaded on {{ album.created_human }}</span>
-      </a>
-      {% endfor %}
-    </div>
+  <div class="albums">
+    {% for album in overview.albums %}
+    <a href="/{{ album.name_nav }}/" class="album">
+      <img src="{{ img_baseurl }}/{{ album.images[0].remote_uuid }}.jpg"
+           alt="{{ album.name_display }}" class="album-cover">
+      <h2 class="album-title">{{ album.name_display }}</h2>
+    </a>
+    {% endfor %}
   </div>
 </body>
 </html>

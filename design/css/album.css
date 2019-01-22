@@ -1,74 +1,83 @@
-/* ------- GRID SECTION --------- */
-
-.content-container {
-  width: 90%;
-  margin: 0px;
+body {
+  background: var(--grey-main);
 }
 
-.grid-container {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
-  grid-template-areas:
-    "album1 album2 album3 album4 album5";
-  grid-row-gap: 0px;
-  grid-column-gap: 0px;
-  padding-left: 5%;
-  padding-right: 5%;
-}
-
-/* Note that this value is also hardcoded in the js build function */
-@media screen and (max-width: 1200px) {
-  .grid-container {
-    grid-template-columns: 1fr 1fr 1fr;
-    grid-template-areas:
-      "album1 album2 album3";
-  }
-}
-
-/* Note that this value is also hardcoded in the js build function */
-@media screen and (max-width: 800px) {
-  .grid-container {
-    grid-template-columns: 1fr;
-    grid-template-areas:
-      "album1";
-    padding: 0px;
-  }
-  .content-container {
-    width: 100%;
-  }
-}
-
-/* ------- PHOTO SECTION ------- */
-#photo-container {
-  display: none;
-}
-
-.photo-column {
+nav {
+  background: var(--grey-darkest);
+  color: var(--grey-lightest);
+  padding: 1em;
   display: flex;
-  flex-direction: column;
-  align-content: space-between;
-  width: 100%;
+  align-items: center;
 }
 
-#photo-column1 { grid-area: "album1"; }
-#photo-column2 { grid-area: "album2"; }
-#photo-column3 { grid-area: "album3"; }
-#photo-column4 { grid-area: "album4"; }
-#photo-column5 { grid-area: "album5"; }
+nav .icon {
+  display: inline-block;
+  width: 32px;
+  height: 32px;
+  fill: var(--grey-lightest);
+  -webkit-transition: fill 0.2s;
+}
 
-.photo img {
-  width: 95%;
-  height: auto;
-  -webkit-transition: width 0.2s;
+nav .home-link:hover .icon {
+  fill: var(--prim-main);
+}
+
+nav .album-name {
+  flex: 1;
+  color: var(--white-main);
+  text-align: center;
+}
+
+.album {
+  padding: 1em;
+  columns: 1;
+  column-fill: balance;
+  column-gap: 1em;
+}
+
+@media screen and (min-width: 400px) {
+  .album {
+    columns: 2;
+  }
+}
+
+@media screen and (min-width: 800px) {
+  .album {
+    columns: 3;
+  }
+}
+
+@media screen and (min-width: 1200px) {
+  .album {
+    columns: 5;
+    max-width: 1920px;
+    margin: 0 auto;
+  }
 }
 
 .photo {
-  text-align: center;
-  margin-bottom: 5px;
-  margin-top: 5px;
+  margin-bottom: 1em;
+  /* Not honoured by Chrome while animating the scale transform */
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+/* This is required to fix an annoying glitch with the transform
+ * on hover. Without the line-height property, the anchor tag has
+ * some height of it's own. This leads to an annoying shift of the
+ * photo: it doesn't seem to zoom while being completely static.
+ */
+.photo a {
+  display: block;
+  line-height: 0;
+}
+
+.photo img {
+  width: 100%;
+  object-fit: cover;
+  -webkit-transition: transform 0.2s;
 }
 
 .photo:hover img {
-  width: 100%;
-  cursor: pointer;
+  transform: scale(1.1);
 }
