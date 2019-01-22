@@ -8,11 +8,6 @@ from pxl import state
 from PIL import Image  # type: ignore
 
 
-def width_for_size(size: state.Size) -> int:
-    size_switch = {state.Size.display_w_1600: 1600, state.Size.thumbnail_w_400: 400}
-    return size_switch[size]
-
-
 def compress_image(local_filename: Path) -> Dict[state.Size, Path]:
     """
     Compresses the image to different sizes.
@@ -32,7 +27,7 @@ def compress_image(local_filename: Path) -> Dict[state.Size, Path]:
         real_w, real_h = image.size
         for size_to_generate in sizes_to_generate:
             # Prevent upscaling
-            w = width_for_size(size_to_generate)
+            w = size_to_generate.max_width
             if w >= real_w:
                 image_paths[size_to_generate] = original_tmp_path
 

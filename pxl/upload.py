@@ -98,7 +98,7 @@ def public_image_with_size(client: Client, local_filename: Path) -> state.Image:
 
     local_scaled_files = compress.compress_image(local_filename)
     for size, local_filename in local_scaled_files.items():
-        object_name = f"{file_uuid}{get_size_suffix(size)}{extension}"
+        object_name = f"{file_uuid}{size.path_suffix}{extension}"
         public_image(client, local_filename, object_name)
 
     return state.Image(
@@ -145,12 +145,3 @@ def get_normalized_extension(filename: Path) -> str:
         return ".jpg"
 
     return suffix_lowered
-
-
-def get_size_suffix(size: state.Size) -> str:
-    res_dict = {
-        state.Size.original: "_o",
-        state.Size.display_w_1600: "_w_1600",
-        state.Size.thumbnail_w_400: "_w_400",
-    }
-    return res_dict[size]

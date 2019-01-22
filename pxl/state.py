@@ -17,6 +17,26 @@ class Size(Enum):
     display_w_1600 = auto()
     thumbnail_w_400 = auto()
 
+    @property
+    def path_suffix(self) -> str:
+        res_dict = {
+            Size.original: "_o",
+            Size.display_w_1600: "_w_1600",
+            Size.thumbnail_w_400: "_w_400",
+        }
+        return res_dict[self]
+
+    @property
+    def max_width(self) -> int:
+        size_switch = {
+            # Not actually unlimited but people shouldn't be stupid
+            # like this. Browsers don't accept these huge images.
+            Size.original: 10000000,
+            Size.display_w_1600: 1600,
+            Size.thumbnail_w_400: 400,
+        }
+        return size_switch[self]
+
 
 @dataclass
 class Image:
