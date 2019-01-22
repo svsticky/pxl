@@ -1,0 +1,17 @@
+version: 2
+jobs:
+  build:
+    working_directory: ~/pxl
+    docker:
+      - image: python:3.7.2-slim-stretch
+        environment: {}
+    steps:
+      - checkout
+      - run:
+          command: |
+            pip install --user pipenv
+            pipenv install --dev --deploy
+      - run:
+          command: |
+            pipenv run format-check
+            pipenv run typecheck
