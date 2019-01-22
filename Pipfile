@@ -11,9 +11,12 @@ pyyaml = "*"
 Pillow = "*"
 
 [dev-packages]
-mypy = "*"
+mypy-mypyc = "*"
+black = "==18.9b0"
 
 [scripts]
+format = "black ."
+format-check = "black --check ."
 typecheck = "mypy ."
 pxl = "python main.py"
 

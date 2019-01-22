@@ -6,47 +6,46 @@ from pathlib import Path
 import pxl.state as state
 
 
-def build(overview: state.Overview,
-          output_dir: Path,
-          template_dir: Path,
-          bucket_puburl: str):
+def build(
+    overview: state.Overview, output_dir: Path, template_dir: Path, bucket_puburl: str
+):
     """Build a static site based on the state."""
 
-    index_template = load_template(template_dir / 'index.html.j2')
-    album_template = load_template(template_dir / 'album.html.j2')
-    photo_template = load_template(template_dir / 'photo.html.j2')
+    index_template = load_template(template_dir / "index.html.j2")
+    album_template = load_template(template_dir / "album.html.j2")
+    photo_template = load_template(template_dir / "photo.html.j2")
 
     clear_directory(output_dir)
     output_dir.mkdir(exist_ok=True)
 
-    shutil.copytree(template_dir / 'css', output_dir / 'css')
-    shutil.copytree(template_dir / 'js', output_dir / 'js')
+    shutil.copytree(template_dir / "css", output_dir / "css")
+    shutil.copytree(template_dir / "js", output_dir / "js")
 
-    with (output_dir / 'index.html').open('w+') as f:
-        index_template.stream(overview=overview,
-                              img_baseurl=bucket_puburl).dump(f)
+    with (output_dir / "index.html").open("w+") as f:
+        index_template.stream(overview=overview, img_baseurl=bucket_puburl).dump(f)
 
     for album in overview.albums:
         album_dir = output_dir / album.name_nav
         album_dir.mkdir()
 
-        with (album_dir / 'index.html').open('w+') as f:
-            album_template.stream(album=album,
-                                  img_baseurl=bucket_puburl).dump(f)
+        with (album_dir / "index.html").open("w+") as f:
+            album_template.stream(album=album, img_baseurl=bucket_puburl).dump(f)
 
         for i, image in enumerate(album.images):
             image_dir = album_dir / str(image.remote_uuid)
             image_dir.mkdir()
 
-            with (image_dir / 'index.html').open('w+') as f:
-                img_prev = album.images[i-1] if i-1 >= 0 else None
-                img_next = album.images[i+1] if i+1 < len(album.images) else None
+            with (image_dir / "index.html").open("w+") as f:
+                img_prev = album.images[i - 1] if i - 1 >= 0 else None
+                img_next = album.images[i + 1] if i + 1 < len(album.images) else None
 
-                photo_template.stream(img=image,
-                                      img_prev=img_prev,
-                                      img_next=img_next,
-                                      img_baseurl=bucket_puburl,
-                                      album_name=album.name_nav).dump(f)
+                photo_template.stream(
+                    img=image,
+                    img_prev=img_prev,
+                    img_next=img_next,
+                    img_baseurl=bucket_puburl,
+                    album_name=album.name_nav,
+                ).dump(f)
 
 
 def load_template(template_file: Path) -> jinja2.Template:
