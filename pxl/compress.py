@@ -7,6 +7,7 @@ from PIL import Image  # type: ignore
 
 WIDTHS = [1600, 800]
 
+
 def compress_image(local_filename: Path) -> List[Path]:
     """Compresses the image to different sizes and saves them to /tmp, returns a list of paths"""
 
@@ -32,11 +33,12 @@ def compress_image(local_filename: Path) -> List[Path]:
             # Scale the image
             scaled.thumbnail(size, Image.ANTIALIAS)
             # Save the image with a width specification
-            scaled_path = Path(tempfile.gettempdir()).joinpath(f"{local_filename.stem}-w{size[0]}.jpeg")
+            scaled_path = Path(tempfile.gettempdir()).joinpath(
+                f"{local_filename.stem}-w{size[0]}.jpeg"
+            )
             scaled.save(scaled_path, image.format)
 
             # Add the path to the output list
             image_paths.append(scaled_path)
 
     return image_paths
-
