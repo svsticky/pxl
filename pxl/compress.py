@@ -1,10 +1,13 @@
-from pathlib import Path
-from PIL import Image
 import tempfile
+
+from pathlib import Path
+from typing import List
+
+from PIL import Image  # type: ignore
 
 WIDTHS = [1600, 800]
 
-def compress_image(local_filename: Path) -> [Path]:
+def compress_image(local_filename: Path) -> List[Path]:
     """Compresses the image to different sizes and saves them to /tmp, returns a list of paths"""
 
     image_paths = []
