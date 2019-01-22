@@ -55,7 +55,7 @@ def load() -> Config:
 
 
 def save(cfg: Config) -> None:
-    PXL_DIR.mkdir(parents=True, exists_ok=True)
+    PXL_DIR.mkdir(parents=True, exist_ok=True)
     with PXL_CONFIG.open('w') as f:
         json.dump(cfg.to_json(), f)
 
