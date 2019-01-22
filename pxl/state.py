@@ -1,14 +1,11 @@
 from __future__ import annotations
 
 import datetime
-import json
 import locale
 import uuid
-import sys
 
 from dataclasses import dataclass
 from enum import Enum, auto
-from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
 
 
@@ -31,7 +28,7 @@ class Size(Enum):
         size_switch = {
             # Not actually unlimited but people shouldn't be stupid
             # like this. Browsers don't accept these huge images.
-            Size.original: 10000000,
+            Size.original: 10_000_000,
             Size.display_w_1600: 1600,
             Size.thumbnail_w_400: 400,
         }
@@ -62,6 +59,22 @@ class Image:
             "remote_uuid": self.remote_uuid.hex,
             "avaialble_sizes": list(map(lambda x: x.name, self.available_sizes)),
         }
+
+    def get_name(self, size_name: str) -> str:
+        try:
+            size = Size[size_name]
+            if size in self.available_sizes:
+                return f"{self.remote_uuid}{size.path_suffix}"
+            else:
+                print(
+                    f"WARN: {size_name} is not available for {self.remote_uuid}, defaulting to {Size.original}"
+                )
+                return f"{self.remote_uuid}{Size.original.path_suffix}"
+        except KeyError:
+            print(
+                f"WARN: {size_name} is not a valid Size, defaulting to {Size.original}"
+            )
+            return Size.original.path_suffix
 
 
 @dataclass
