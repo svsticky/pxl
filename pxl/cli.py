@@ -15,13 +15,13 @@ import pxl.upload as upload
 
 
 @click.group(name="pxl")
-def cli():
+def cli() -> None:
     """Photo management script for S3 albums."""
 
 
 @cli.command(name="init")
 @click.option("--force", is_flag=True, default=False)
-def init_cmd(force: bool):
+def init_cmd(force: bool) -> None:
     """Initialize pxl configuration"""
     if config.is_initialized() and not force:
         print("pxl is already initiated. Add `--force` to override.")
@@ -45,7 +45,7 @@ def init_cmd(force: bool):
 
 
 @cli.command(name="clean")
-def clean_cmd():
+def clean_cmd() -> None:
     """Clean pxl files from system"""
     print("This operation will remove your `pxl` configuration.")
     print("Any deployed files or uploaded images are unaffected.")
@@ -81,6 +81,7 @@ def upload_cmd(dir_name: str, force: bool) -> None:
         try:
             pxl_state_json = upload.get_json(client, "state.json")
             pxl_state = state.Overview.from_json(pxl_state_json)
+            assert pxl_state is not None, "Expected state to be valid"
         except client.boto.exceptions.NoSuchKey as e:
             pxl_state = state.Overview.empty()
         except Exception as e:
@@ -126,7 +127,7 @@ def upload_cmd(dir_name: str, force: bool) -> None:
 
 
 @cli.command("build")
-def build_cmd():
+def build_cmd() -> None:
     """Build a static site based on current state."""
     print("Building site...")
     # TODO: parameterize
@@ -138,6 +139,7 @@ def build_cmd():
         try:
             pxl_state_json = upload.get_json(client, "state.json")
             overview = state.Overview.from_json(pxl_state_json)
+            assert overview is not None, "Expected state to be valid"
         except client.boto.exceptions.NoSuchKey as e:
             print("Remote state not found. Please upload before continuing.")
             sys.exit(1)
@@ -183,5 +185,5 @@ def get_input(
             return user_input
 
 
-def main():
+def main() -> None:
     cli()

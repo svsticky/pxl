@@ -61,7 +61,7 @@ def save(cfg: Config) -> None:
         json.dump(cfg.to_json(), f)
 
 
-def clean(clean_config=False) -> None:
+def clean(clean_config: bool = False) -> None:
     try:
         PXL_CONFIG.unlink()
         print("Config cleaned.")
