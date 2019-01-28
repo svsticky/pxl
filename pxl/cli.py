@@ -116,7 +116,6 @@ def upload_cmd(dir_name: str, force: bool) -> None:
 def build_cmd() -> None:
     """Build a static site based on current state."""
     print("Building site...")
-    # TODO: parameterize
     output_dir = Path.cwd() / "build"
     design_dir = Path.cwd() / "design"
 
