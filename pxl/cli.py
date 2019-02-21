@@ -15,29 +15,27 @@ import pxl.upload as upload
 
 
 @click.group(name="pxl")
-def cli():
+def cli() -> None:
     """Photo management script for S3 albums."""
 
 
 @cli.command(name="init")
 @click.option("--force", is_flag=True, default=False)
-def init_cmd(force: bool):
+def init_cmd(force: bool) -> None:
     """Initialize pxl configuration"""
     if config.is_initialized() and not force:
         print("pxl is already initiated. Add `--force` to override.")
         sys.exit(1)
 
     print("We need some information. Please answer the prompts.")
-    print("Defaults are between parentheses.")
+    print("Defaults are between [brackets].")
     print()
 
-    s3_endpoint = get_input(
-        "S3 endpoint ({default}): ", default="digitaloceanspaces.com"
-    )
-    s3_region = get_input("S3 region ({default}): ", default="ams3")
-    s3_bucket = get_input("S3 bucket: ")
-    s3_key_id = get_input("S3 key ID: ")
-    s3_key_secret = get_input("S3 key secret (not echoed): ", hide_input=True)
+    s3_endpoint = click.prompt("S3 endpoint", default="digitaloceanspaces.com")
+    s3_region = click.prompt("S3 region", default="ams3")
+    s3_bucket = click.prompt("S3 bucket")
+    s3_key_id = click.prompt("S3 key ID")
+    s3_key_secret = click.prompt("S3 key secret (not shown)", hide_input=True)
 
     cfg = config.Config(s3_endpoint, s3_region, s3_bucket, s3_key_id, s3_key_secret)
 
@@ -45,17 +43,13 @@ def init_cmd(force: bool):
 
 
 @cli.command(name="clean")
-def clean_cmd():
+def clean_cmd() -> None:
     """Clean pxl files from system"""
     print("This operation will remove your `pxl` configuration.")
     print("Any deployed files or uploaded images are unaffected.")
     print("")
 
-    confirmation = input("Do you want to continue? [y/N] ")
-    if confirmation.lower() != "y":
-        print("Not confirmed. Exiting.")
-        sys.exit(0)
-
+    click.confirm("Do you want to continue?", abort=True)
     config.clean()
 
 
@@ -73,14 +67,14 @@ def upload_cmd(dir_name: str, force: bool) -> None:
         print(f"{dir_path} is not a directory.")
 
     with upload.client(cfg, break_lock=force) as client:
-        album_name = get_input(
-            "What name should the album have? ({default}) ",
-            default=dir_path.name.title(),
+        album_name = click.prompt(
+            "What name should the album have?", default=dir_path.name.title()
         )
 
         try:
             pxl_state_json = upload.get_json(client, "state.json")
             pxl_state = state.Overview.from_json(pxl_state_json)
+            assert pxl_state is not None, "Expected state to be valid"
         except client.boto.exceptions.NoSuchKey as e:
             pxl_state = state.Overview.empty()
         except Exception as e:
@@ -92,14 +86,7 @@ def upload_cmd(dir_name: str, force: bool) -> None:
         # Get existing album with this name for appending.
         album = pxl_state.get_album_by_name(album_name)
         if album:
-            append_confirm = get_input(
-                "Appending to existing album ok? [Y/n] ",
-                default="y",
-                validate=lambda x: x.lower() in ["y", "n"],
-            )
-            if append_confirm == "n":
-                print("Not appending. Choose a different album name.")
-                sys.exit(1)
+            click.confirm("Album already exists. Add to existing album?", abort=True)
         else:
             print("Creating new album.")
             album = state.Album(
@@ -126,10 +113,9 @@ def upload_cmd(dir_name: str, force: bool) -> None:
 
 
 @cli.command("build")
-def build_cmd():
+def build_cmd() -> None:
     """Build a static site based on current state."""
     print("Building site...")
-    # TODO: parameterize
     output_dir = Path.cwd() / "build"
     design_dir = Path.cwd() / "design"
 
@@ -138,6 +124,7 @@ def build_cmd():
         try:
             pxl_state_json = upload.get_json(client, "state.json")
             overview = state.Overview.from_json(pxl_state_json)
+            assert overview is not None, "Expected state to be valid"
         except client.boto.exceptions.NoSuchKey as e:
             print("Remote state not found. Please upload before continuing.")
             sys.exit(1)
@@ -156,32 +143,5 @@ def build_cmd():
     print("Done.")
 
 
-def get_input(
-    prompt: str,
-    default: Optional[str] = None,
-    hide_input: bool = False,
-    validate: Callable[[str], bool] = lambda x: True,
-) -> str:
-    """
-    Utility for common user input scenario's.
-
-    Supports defaults, hiding the input by the user (useful for sensitive
-    information). Accepts a validate callback and reprompts the user if
-    this callback fails.
-    """
-    # Slightly magic behavior: if the default is set, we call the
-    # format method with the default on the string. This means the
-    # user is shown the default.
-    if default:
-        prompt = prompt.format(default=default)
-
-    while True:
-        user_input = (getpass.getpass(prompt) if hide_input else input(prompt)).strip()
-        if user_input == "" and default:
-            return default
-        if validate(user_input):
-            return user_input
-
-
-def main():
+def main() -> None:
     cli()

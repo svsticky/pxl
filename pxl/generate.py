@@ -8,7 +8,7 @@ import pxl.state as state
 
 def build(
     overview: state.Overview, output_dir: Path, template_dir: Path, bucket_puburl: str
-):
+) -> None:
     """Build a static site based on the state."""
 
     index_template = load_template(template_dir / "index.html.j2")
@@ -58,7 +58,7 @@ def load_template(template_file: Path) -> jinja2.Template:
         return jinja2.Template(f.read())
 
 
-def clear_directory(dir_path: Path):
+def clear_directory(dir_path: Path) -> None:
     """Remove all directory contents, except for the directory itself.
 
     This is useful so the inode number for the directory doesn't get removed

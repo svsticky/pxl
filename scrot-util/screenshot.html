@@ -8,16 +8,14 @@
     }
     body {
       margin: 0;
-      padding: 0 50px;
-      background: radial-gradient(circle at top left,#45C4FB, #FFA43E);
-      background-repeat: no-repeat;
-      background-attachment: fixed;
+      padding: 10px;
     }
     .window {
       border-radius: 5px;
       border: 1px solid rgba(61,57,50, 0.5);
       background: #fff;
       overflow: hidden;
+      box-shadow: 0 0 10px #777;
     }
     .window-chrome {
       background: #f2f2f2;
@@ -69,7 +67,6 @@
   </style>
 </head>
 <body>
-  <h1 class="copy">pxl - Photo viewer</h1>
   <div class="window">
     <div class="window-chrome">
       <img src="/back.svg" />
@@ -79,8 +76,8 @@
         <img src="/lock.svg" id="lock"/>
         <span class="scheme">https</span>
         <span class="colon-slash-slash">://</span>
-        <span class="domain">photos.com</span>
-        /foo
+        <span class="domain">photos.yoursite.com</span>
+        /album/b71a5dce-ab21-4a0b-bba7-5afe5d1816f9/
       </div>
       <img src="/menu.svg" />
     </div>

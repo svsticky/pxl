@@ -1,6 +1,7 @@
 # `pxl`
 
-An S3/DigitalOcean spaces photo management script.
+Create static image galleries that work without JavaScript and can be hosted
+from any webserver.
 
 ![Pxl Photo Viewer](./docs/photo-viewer.png)
 

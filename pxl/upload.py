@@ -31,14 +31,14 @@ class Lock:
     start_time: datetime.datetime
 
     @classmethod
-    def from_json(cls, json: Dict[str, Any]):
+    def from_json(cls, json: Dict[str, Any]) -> Lock:
         return cls(
             user=json["user"],
             hostname=json["hostname"],
             start_time=datetime.datetime.fromisoformat(json["start_time"]),
         )
 
-    def to_json(self):
+    def to_json(self) -> Dict[str, str]:
         return {
             "user": self.user,
             "hostname": self.hostname,
@@ -46,7 +46,7 @@ class Lock:
         }
 
     @classmethod
-    def new(cls):
+    def new(cls) -> Lock:
         return cls(
             user=getpass.getuser(),
             hostname=socket.gethostname(),
@@ -120,7 +120,7 @@ def public_image(client: Client, local_filename: Path, object_name: str) -> None
     )
 
 
-def get_json(client: Client, object_name: str):
+def get_json(client: Client, object_name: str) -> Any:
     resp = client.boto.get_object(Bucket=client.cfg.s3_bucket, Key=object_name)
     contents = resp["Body"].read()
     return json.loads(contents)
