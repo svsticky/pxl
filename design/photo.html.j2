@@ -29,7 +29,7 @@
   {% endif %}
 
   <div class="photo">
-    <img src="{{ img_baseurl }}/{{ img.remote_uuid }}.jpg">
+    <img src="{{ img_baseurl }}/{{ img.get_name("display_w_1600") }}.jpg">
   </div>
   <div class="photo-actions left">
     <a title="Back to album" class="back-to-album" href="/{{ album_name }}">
@@ -65,7 +65,7 @@
   <div class="nav right">
     <a title="Next"
        id="next"
-       href="/{{ album_name }}/{{ img_next.get_name("display_w_1600") }}">&#10095;</a>
+       href="/{{ album_name }}/{{ img_next.remote_uuid }}">&#10095;</a>
   </div>
   {% else %}
   <div class="nav right disabled">

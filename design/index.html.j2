@@ -12,7 +12,7 @@
   <div class="albums">
     {% for album in overview.albums %}
     <a href="/{{ album.name_nav }}/" class="album">
-      <img src="{{ img_baseurl }}/{{ album.images[0].remote_uuid }}.jpg"
+      <img src="{{ img_baseurl }}/{{ album.images[0].get_name("thumbnail_w_400") }}.jpg"
            alt="{{ album.name_display }}" class="album-cover">
       <h2 class="album-title">{{ album.name_display }}</h2>
     </a>
