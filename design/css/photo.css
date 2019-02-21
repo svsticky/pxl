@@ -72,6 +72,7 @@ body {
 .photo-actions {
   grid-area: actions;
   display: flex;
+  font-weight: bold;
   align-items: center;
   padding: 0 20px;
   border-top: 1px solid var(--grey-main);
