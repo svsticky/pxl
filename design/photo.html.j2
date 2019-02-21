@@ -8,10 +8,10 @@
   <link rel="stylesheet" type="text/css" href="/css/photo.css">
   <script src="/js/photo.js" defer></script>
   {% if img_prev %}
-  <link rel="prefetch" href="{{ img_baseurl }}/{{ img_prev.remote_uuid }}.jpg">
+  <link rel="prefetch" href="{{ img_baseurl }}/{{ img_prev.get_name("display_w_1600") }}.jpg">
   {% endif %}
   {% if img_next %}
-  <link rel="prefetch" href="{{ img_baseurl }}/{{ img_next.remote_uuid }}.jpg">
+  <link rel="prefetch" href="{{ img_baseurl }}/{{ img_next.get_name("display_w_1600") }}.jpg">
   {% endif %}
   <title>pxl</title>
 </head>
