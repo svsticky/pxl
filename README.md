@@ -18,6 +18,8 @@ Conventions and development:
 
 ## Development
 
+Build status: [![Build status][ci-status]][ci-page]
+
 `pxl` has the following dependencies:
 
  - Python 3.7
@@ -38,3 +40,6 @@ $ pipenv run pxl
 # Run the typecheck
 $ pipenv run typecheck
 ```
+
+ [ci-status]:https://circleci.com/gh/svsticky/pxl.svg?style=svg
+ [ci-page]:https://circleci.com/gh/svsticky/pxl
