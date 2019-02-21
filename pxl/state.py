@@ -57,7 +57,7 @@ class Image:
     def to_json(self) -> Dict[str, Any]:
         return {
             "remote_uuid": self.remote_uuid.hex,
-            "avaialble_sizes": list(map(lambda x: x.name, self.available_sizes)),
+            "available_sizes": list(map(lambda x: x.name, self.available_sizes)),
         }
 
     def get_name(self, size_name: str) -> str:
