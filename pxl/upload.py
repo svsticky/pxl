@@ -111,7 +111,11 @@ def public_image(client: Client, local_filename: Path, object_name: str) -> None
     Upload a local image as world readable with a random UUID.
     """
     print(f"Uploading {local_filename} as {object_name}")
-    extra_args = {"ContentType": "image/jpeg", "ACL": "public-read"}
+    extra_args = {
+        "ContentType": "image/jpeg",
+        "ACL": "public-read",
+        "ContentDisposition": "attachment",
+    }
     client.boto.upload_file(
         Filename=str(local_filename),
         Bucket=client.cfg.s3_bucket,
