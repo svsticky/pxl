@@ -104,7 +104,7 @@ class Album:
 
     @classmethod
     def from_json(cls, json: Any) -> Optional[Album]:
-        assert isinstance(dict, json)
+        assert isinstance(json, dict)
         try:
             name_display = json["name_display"]
             name_nav = json["name_nav"]
@@ -141,7 +141,7 @@ class Overview:
 
     @classmethod
     def from_json(cls, json: Any) -> Optional[Overview]:
-        assert isinstance(dict, json)
+        assert isinstance(json, dict)
         try:
             albums = filter_optionals(
                 [Album.from_json(album) for album in json["albums"]]
