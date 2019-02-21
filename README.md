@@ -1,7 +1,7 @@
 # `pxl`
 
 Create static image galleries that work without JavaScript and can be hosted
-from any webserver.
+from any webserver. [**Live demo**](https://pxl-demo.svsticky.nl/).
 
 ![Pxl Photo Viewer](./docs/photo-viewer.png)
 
