@@ -115,6 +115,7 @@ def public_image(client: Client, local_filename: Path, object_name: str) -> None
         "ContentType": "image/jpeg",
         "ACL": "public-read",
         "ContentDisposition": "attachment",
+        "CacheControl": "must-revalidate",
     }
     client.boto.upload_file(
         Filename=str(local_filename),
