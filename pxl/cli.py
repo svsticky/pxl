@@ -1,7 +1,10 @@
 import click
 import datetime
+import functools
 import getpass
+import http.server
 import json
+import socketserver
 import sys
 
 from dataclasses import dataclass
@@ -141,6 +144,37 @@ def build_cmd() -> None:
             bucket_puburl=bucket_puburl,
         )
     print("Done.")
+
+
+@cli.command("preview")
+@click.option("--port", default=8000, type=int, help="Port to use")
+@click.option("--bind", default="", help="Address to bind on (default: all interfaces)")
+def preview_cmd(port: int, bind: str) -> None:
+    """Run a local webserver on build output"""
+    output_dir = Path.cwd() / "build"
+    if not output_dir.is_dir():
+        print("No output to serve. Please run `pxl build` first.")
+        sys.exit(1)
+
+    click.launch(f"http://localhost:{port}")
+
+    # Start the default Python HTTP server.
+    #
+    # We want to specify that the `build` directory is used for serving
+    # the responses. The TCPServer class expects a `handler_class` to
+    # initialize, so we can't construct in a `SimpleHTTPRequestHandler`
+    # instance and pass it the `directory` argument directly. Instead
+    # we need to partially apply the constructor with the `directory`
+    # keyword argument and pass that as the handler_class.
+    #
+    # This feels more complicated than it should be.
+    server_address = (bind, port)
+    handler_class = functools.partial(
+        http.server.SimpleHTTPRequestHandler, directory=str(output_dir)
+    )
+    with socketserver.TCPServer(server_address, handler_class) as httpd:
+        print(f"Serving {output_dir} at port", port)
+        httpd.serve_forever()
 
 
 def main() -> None:
