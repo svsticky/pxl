@@ -172,7 +172,7 @@ def preview_cmd(port: int, bind: str) -> None:
     handler_class = functools.partial(
         http.server.SimpleHTTPRequestHandler, directory=str(output_dir)
     )
-    with socketserver.TCPServer(server_address, handler_class) as httpd:
+    with socketserver.TCPServer(server_address, handler_class) as httpd:  # type: ignore
         print(f"Serving {output_dir} at port", port)
         httpd.serve_forever()
 
