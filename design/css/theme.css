@@ -23,7 +23,7 @@
 }
 
 body {
-  background-color: var(--theme-broken-white);
+  background-color: var(--prim-darkest);
 }
 
 html {
