@@ -26,6 +26,7 @@ nav .album-name {
   flex: 1;
   color: var(--white-main);
   text-align: center;
+  margin-right: -70px;
 }
 
 .album {
