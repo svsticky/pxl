@@ -95,7 +95,7 @@ body {
 
 .photo-actions svg {
   -webkit-transition: fill 0.2s;
-  fill: var(--grey-lightest);
+  fill: var(--white-darkest);
 }
 
 .photo-actions a .icon {
@@ -106,7 +106,7 @@ body {
 .photo-actions a .text {
   padding-left: 5px;
   display: inline-block;
-  color: var(--grey-lightest);
+  color: var(--white-darkest);
   -webkit-transition: color 0.2s;
 }
 

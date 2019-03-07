@@ -4,7 +4,7 @@ body {
 
 nav {
   background: var(--grey-darkest);
-  color: var(--grey-lightest);
+  color: var(--white-darkest);
   padding: 1em;
   display: flex;
   align-items: center;
@@ -14,7 +14,7 @@ nav .icon {
   display: inline-block;
   width: 32px;
   height: 32px;
-  fill: var(--grey-lightest);
+  fill: var(--white-darkest);
   -webkit-transition: fill 0.2s;
 }
 
@@ -80,4 +80,14 @@ nav .album-name {
 
 .photo:hover img {
   transform: scale(1.1);
+}
+
+.credits a {
+  color: var(--white-darkest);
+  text-decoration: none;
+  -webkit-transition: color 0.2s;
+}
+
+.credits a:hover {
+  color: var(--prim-main);
 }

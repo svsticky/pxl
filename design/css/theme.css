@@ -15,9 +15,11 @@
   --grey-dark: #1F2324;
   --grey-darkest: #161C1F;
 
-  --white-main: #B4DAEB;
-  --white-lightest: #E3F4FB;
-  --white-light: #CCE8F4;
+  --white-main: #D5E7EF;
+  /* --white-lightest: ; */
+  /* --white-light: ; */
+  /* --white-dark: ; */
+  --white-darkest: #9DADB5;
 }
 
 body {
