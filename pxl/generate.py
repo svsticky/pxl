@@ -20,6 +20,7 @@ def build(
 
     shutil.copytree(template_dir / "css", output_dir / "css")
     shutil.copytree(template_dir / "js", output_dir / "js")
+    shutil.copy(template_dir / "404.html", output_dir / "404.html")
 
     with (output_dir / "index.html").open("w+") as f:
         index_template.stream(overview=overview, img_baseurl=bucket_puburl).dump(f)
