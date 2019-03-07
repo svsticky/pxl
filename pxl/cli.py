@@ -187,13 +187,13 @@ def preview_cmd(port: int, bind: str) -> None:
     handler_class = functools.partial(
         http.server.SimpleHTTPRequestHandler, directory=str(output_dir)
     )
-    with socketserver.TCPServer(server_address, handler_class) as httpd:  # type: ignore
-        print(f"Serving {output_dir} at port", port)
+    with socketserver.TCPServer(server_address, handler_class) as httpd:
+        click.echo(f"Serving {output_dir} at port {port}", err=True)
         httpd.serve_forever()
 
 
 @cli.command("deploy")
-def preview_cmd() -> None:
+def deploy_cmd() -> None:
     """Deploy the static output."""
     if not config.is_initialized():
         click.echo("Config not initialized. Please run `pxl init` first.", err=False)
