@@ -28,12 +28,11 @@ def cli() -> None:
 def init_cmd(force: bool) -> None:
     """Initialize pxl configuration"""
     if config.is_initialized() and not force:
-        print("pxl is already initiated. Add `--force` to override.")
+        click.echo("pxl is already initiated. Add `--force` to override.", err=True)
         sys.exit(1)
 
-    print("We need some information. Please answer the prompts.")
-    print("Defaults are between [brackets].")
-    print()
+    click.echo("We need some information. Please answer the prompts.", err=True)
+    click.echo("Defaults are between [brackets].\n", err=True)
 
     s3_endpoint = click.prompt("S3 endpoint", default="digitaloceanspaces.com")
     s3_region = click.prompt("S3 region", default="ams3")
@@ -62,9 +61,8 @@ def init_cmd(force: bool) -> None:
 @cli.command(name="clean")
 def clean_cmd() -> None:
     """Clean pxl files from system"""
-    print("This operation will remove your `pxl` configuration.")
-    print("Any deployed files or uploaded images are unaffected.")
-    print("")
+    click.echo("This operation will remove your `pxl` configuration.", err=True)
+    click.echo("Any deployed files or uploaded images are unaffected.\n", err=True)
 
     click.confirm("Do you want to continue?", abort=True)
     config.clean()
@@ -81,7 +79,8 @@ def upload_cmd(dir_name: str, force: bool) -> None:
 
     dir_path = Path(dir_name)
     if not dir_path.is_dir():
-        print(f"{dir_path} is not a directory.")
+        click.echo(f"{dir_path} is not a directory.", err=True)
+        sys.exit(1)
 
     with upload.client(cfg, break_lock=force) as client:
         album_name = click.prompt(
@@ -105,7 +104,7 @@ def upload_cmd(dir_name: str, force: bool) -> None:
         if album:
             click.confirm("Album already exists. Add to existing album?", abort=True)
         else:
-            print("Creating new album.")
+            click.echo("Creating new album.", err=True)
             album = state.Album(
                 name_display=album_name,
                 name_nav=album_name.lower().replace(" ", "-"),
@@ -132,7 +131,7 @@ def upload_cmd(dir_name: str, force: bool) -> None:
 @cli.command("build")
 def build_cmd() -> None:
     """Build a static site based on current state."""
-    print("Building site...")
+    click.echo("Building site...", err=True)
     output_dir = Path.cwd() / "build"
     design_dir = Path.cwd() / "design"
 
@@ -143,10 +142,12 @@ def build_cmd() -> None:
             overview = state.Overview.from_json(pxl_state_json)
             assert overview is not None, "Expected state to be valid"
         except client.boto.exceptions.NoSuchKey as e:
-            print("Remote state not found. Please upload before continuing.")
+            click.echo(
+                "Remote state not found. Please upload before continuing.", err=True
+            )
             sys.exit(1)
         except Exception as e:
-            print(e)
+            click.echo(e, err=True)
             sys.exit(1)
 
         bucket_puburl = f"https://{cfg.s3_bucket}.{cfg.s3_region}.{cfg.s3_endpoint}"
@@ -157,7 +158,7 @@ def build_cmd() -> None:
             template_dir=design_dir,
             bucket_puburl=bucket_puburl,
         )
-    print("Done.")
+    click.echo("Done.", err=True)
 
 
 @cli.command("preview")
@@ -167,7 +168,7 @@ def preview_cmd(port: int, bind: str) -> None:
     """Run a local webserver on build output"""
     output_dir = Path.cwd() / "build"
     if not output_dir.is_dir():
-        print("No output to serve. Please run `pxl build` first.")
+        click.echo("No output to serve. Please run `pxl build` first.", err=True)
         sys.exit(1)
 
     click.launch(f"http://localhost:{port}")
@@ -195,12 +196,12 @@ def preview_cmd(port: int, bind: str) -> None:
 def preview_cmd() -> None:
     """Deploy the static output."""
     if not config.is_initialized():
-        print("Config not initialized. Please run `pxl init` first.")
+        click.echo("Config not initialized. Please run `pxl init` first.", err=False)
         sys.exit(1)
 
     output_dir = Path.cwd() / "build"
     if not output_dir.is_dir():
-        print("No output to deploy. Please run `pxl build` first.")
+        click.echo("No output to deploy. Please run `pxl build` first.", err=False)
         sys.exit(1)
 
     cfg = config.load()
