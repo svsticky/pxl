@@ -18,6 +18,9 @@ class Config:
     s3_bucket: str
     s3_key_id: str
     s3_key_secret: str
+    deploy_host: str
+    deploy_user: str
+    deploy_path: str
 
     def to_json(self) -> Dict[str, str]:
         return {
@@ -26,6 +29,9 @@ class Config:
             "s3_bucket": self.s3_bucket,
             "s3_key_id": self.s3_key_id,
             "s3_key_secret": self.s3_key_secret,
+            "deploy_host": self.deploy_host,
+            "deploy_user": self.deploy_user,
+            "deploy_path": self.deploy_path,
         }
 
     @classmethod
@@ -36,6 +42,9 @@ class Config:
             s3_bucket=json["s3_bucket"],
             s3_key_id=json["s3_key_id"],
             s3_key_secret=json["s3_key_secret"],
+            deploy_host=json["deploy_host"],
+            deploy_user=json["deploy_user"],
+            deploy_path=json["deploy_path"],
         )
 
 

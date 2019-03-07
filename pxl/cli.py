@@ -5,6 +5,7 @@ import getpass
 import http.server
 import json
 import socketserver
+import subprocess
 import sys
 
 from dataclasses import dataclass
@@ -40,7 +41,20 @@ def init_cmd(force: bool) -> None:
     s3_key_id = click.prompt("S3 key ID")
     s3_key_secret = click.prompt("S3 key secret (not shown)", hide_input=True)
 
-    cfg = config.Config(s3_endpoint, s3_region, s3_bucket, s3_key_id, s3_key_secret)
+    deploy_host = click.prompt("Deploy host")
+    deploy_user = click.prompt("Deploy user")
+    deploy_path = click.prompt("Deploy path")
+
+    cfg = config.Config(
+        s3_endpoint,
+        s3_region,
+        s3_bucket,
+        s3_key_id,
+        s3_key_secret,
+        deploy_host,
+        deploy_user,
+        deploy_path,
+    )
 
     config.save(cfg)
 
@@ -175,6 +189,30 @@ def preview_cmd(port: int, bind: str) -> None:
     with socketserver.TCPServer(server_address, handler_class) as httpd:  # type: ignore
         print(f"Serving {output_dir} at port", port)
         httpd.serve_forever()
+
+
+@cli.command("deploy")
+def preview_cmd() -> None:
+    """Deploy the static output."""
+    if not config.is_initialized():
+        print("Config not initialized. Please run `pxl init` first.")
+        sys.exit(1)
+
+    output_dir = Path.cwd() / "build"
+    if not output_dir.is_dir():
+        print("No output to deploy. Please run `pxl build` first.")
+        sys.exit(1)
+
+    cfg = config.load()
+
+    deploy_command = [
+        "rsync",
+        "-azP",
+        "--delete",
+        f"{output_dir}/",
+        f"{cfg.deploy_user}@{cfg.deploy_host}:{cfg.deploy_path}",
+    ]
+    subprocess.run(deploy_command)
 
 
 def main() -> None:
