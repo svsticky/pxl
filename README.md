@@ -1,45 +1,27 @@
 # `pxl`
 
-Create static image galleries that work without JavaScript and can be hosted
-from any webserver. [**Live demo**](https://pxl-demo.svsticky.nl/).
+Create beautiful static image galleries that work without JavaScript and can be
+hosted from any webserver.
 
-![Pxl Photo Viewer](./docs/photo-viewer.png)
+ - [**Live demo**][pxl-demo]
+ - [**User documentation**][pxl-docs]
 
-## Documentation
+![Pxl Photo Viewer][pxl-screenshot]
 
-User documentation:
+## Quickstart
 
- - [Philosophy and scope](./docs/philosophy.md)
- - [High-level implementation](./docs/high-level-implementation.md)
-
-Conventions and development:
-
- - [Git conventions](./docs/git-conventions.md)
+Please refer to the [**User documentation**][pxl-docs].
 
 ## Development
 
-Build status: [![Build status][ci-status]][ci-page]
+Please refer to the [**Development documentation**][pxl-docs-dev].
 
-`pxl` has the following dependencies:
+## License
 
- - Python 3.7
- - [`pipenv`](https://pipenv.readthedocs.io/en/latest/)
+`pxl` is licensed under the Mozilla Public License. Refer to
+[`LICENSE`][pxl-license] for details.
 
-If you have both of those installed, you can:
-
-```
-# Get the code (alright you also need git and friends)
-$ git clone https://github.com/svsticky/pxl.git
-
-# Create a virtualenv and install dependencies
-$ pipenv install
-
-# Run the program
-$ pipenv run pxl
-
-# Run the typecheck
-$ pipenv run typecheck
-```
-
- [ci-status]:https://circleci.com/gh/svsticky/pxl.svg?style=svg
- [ci-page]:https://circleci.com/gh/svsticky/pxl
+ [pxl-demo]: https://pxl-demo.svsticky.nl/
+ [pxl-docs]: https://pxl-docs.svsticky.nl/
+ [pxl-license]: ./LICENSE
+ [pxl-screenshot]: ./docs/photo-viewer.png
