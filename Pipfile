@@ -17,6 +17,8 @@ mkdocs = "*"
 mkdocs-exclude = "*"
 
 [scripts]
+docs = "mkdocs serve"
+docs-build = "mkdocs build"
 format = "black ."
 format-check = "black --check ."
 typecheck = "mypy --strict ."
