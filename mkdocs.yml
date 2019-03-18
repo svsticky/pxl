@@ -11,4 +11,16 @@ plugins:
   - exclude:
       glob:
         - "README.theme.md"
-nav: []
+nav:
+  - Introduction:
+    - index.md
+    - philosophy.md
+  - Usage:
+    - installation.md
+    - uploading.md
+    - deploying.md
+  - Internals:
+    - state-format.md
+  - Development:
+    - git-conventions.md
+    - high-level-implementation.md
