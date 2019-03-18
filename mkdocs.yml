@@ -1,0 +1,14 @@
+site_name: pxl
+site_dir: ignore/docs
+site_url: https://pxl-docs.svsticky.nl/
+docs_dir: docs/content
+repo_url: https://github.com/svsticky/pxl
+strict: true
+theme:
+  name: null
+  custom_dir: docs/theme
+plugins:
+  - exclude:
+      glob:
+        - "README.theme.md"
+nav: []
