@@ -15,6 +15,7 @@ tooling and libraries the project uses.
 
  - [black](https://github.com/ambv/black) -- Code autoformatter
  - [mypy-mypyc](http://mypy-lang.org/) -- The fantastic typechecker for Python.
+ - [pipenv](https://github.com/pypa/pipenv) -- Create virtualenvs with ease.
 
 ## Documentation
 
