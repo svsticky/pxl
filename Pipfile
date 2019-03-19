@@ -6,7 +6,6 @@ name = "pypi"
 [packages]
 "boto3" = "*"
 click = "*"
-pyyaml = "*"
 "jinja2" = "*"
 Pillow = "*"
 
