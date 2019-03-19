@@ -32,3 +32,4 @@ nav:
   - Development:
     - git-conventions.md
     - high-level-implementation.md
+  - colophon.md
