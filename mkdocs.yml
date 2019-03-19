@@ -19,7 +19,14 @@ nav:
     - installation.md
     - configuration.md
     - uploading.md
-    - deploying.md
+    - deployment.md
+  - Reference:
+    - ref/build.md
+    - ref/clean.md
+    - ref/deploy.md
+    - ref/init.md
+    - ref/preview.md
+    - ref/upload.md
   - Internals:
     - state-format.md
   - Development:
