@@ -17,6 +17,7 @@ nav:
     - philosophy.md
   - Usage:
     - installation.md
+    - configuration.md
     - uploading.md
     - deploying.md
   - Internals:
