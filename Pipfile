@@ -14,6 +14,7 @@ mypy-mypyc = "*"
 black = "==18.9b0"
 mkdocs = "*"
 mkdocs-exclude = "*"
+click-man = "*"
 
 [scripts]
 docs = "mkdocs serve"
