@@ -14,6 +14,8 @@ tooling and libraries the project uses.
 ## Development tools
 
  - [black](https://github.com/ambv/black) -- Code autoformatter
+ - [click-man](https://github.com/click-contrib/click-man) -- Generate manpages
+   from Click CLI apps.
  - [mypy-mypyc](http://mypy-lang.org/) -- The fantastic typechecker for Python.
  - [pipenv](https://github.com/pypa/pipenv) -- Create virtualenvs with ease.
 
