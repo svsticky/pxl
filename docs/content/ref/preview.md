@@ -1,3 +1,3 @@
 mono_title: true
 
-# pxl preview
+# `pxl preview`

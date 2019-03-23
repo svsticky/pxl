@@ -21,12 +21,12 @@ nav:
     - uploading.md
     - deployment.md
   - Reference:
-    - ref/build.md
-    - ref/clean.md
-    - ref/deploy.md
-    - ref/init.md
-    - ref/preview.md
-    - ref/upload.md
+    - pxl build: ref/build.md
+    - pxl clean: ref/clean.md
+    - pxl deploy: ref/deploy.md
+    - pxl init: ref/init.md
+    - pxl preview: ref/preview.md
+    - pxl upload: ref/upload.md
   - Internals:
     - state-format.md
   - Development:

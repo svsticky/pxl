@@ -1,3 +1,3 @@
 mono_title: true
 
-# pxl deploy
+# `pxl deploy`
