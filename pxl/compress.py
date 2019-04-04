@@ -1,23 +1,25 @@
 import tempfile
+import pathlib
 
-from pathlib import Path
-from typing import Dict
-
-from pxl import state
+from typing import Any, Dict
 
 from PIL import Image  # type: ignore
 
+from pxl import state
 
-def compress_image(local_filename: Path) -> Dict[state.Size, Path]:
+
+def compress_image(local_filename: pathlib.Path) -> Dict[state.Size, pathlib.Path]:
     """
     Compresses the image to different sizes.
     Returns a Dict of `state.Size`s to `Path`s in a temporary directory.
     """
     sizes_to_generate = [state.Size.thumbnail_w_400, state.Size.display_w_1600]
-    image_paths: Dict[state.Size, Path] = {}
-    tempdir = Path(tempfile.gettempdir())
+    image_paths: Dict[state.Size, pathlib.Path] = {}
+    tempdir = pathlib.Path(tempfile.gettempdir())
 
     with Image.open(local_filename, "r") as image:
+        image = orient_exif(image)
+
         original_tmp_path = tempdir / local_filename.name
         image = image.convert("RGB")
         image.save(original_tmp_path)
@@ -38,7 +40,7 @@ def compress_image(local_filename: Path) -> Dict[state.Size, Path]:
             # Scale the image
             scaled.thumbnail(size, Image.ANTIALIAS)
             # Save the image with a width specification
-            scaled_path = Path(tempfile.gettempdir()).joinpath(
+            scaled_path = pathlib.Path(tempfile.gettempdir()).joinpath(
                 f"{local_filename.stem}-w{size[0]}.jpeg"
             )
             scaled.save(scaled_path, image.format)
@@ -47,3 +49,35 @@ def compress_image(local_filename: Path) -> Dict[state.Size, Path]:
             image_paths[size_to_generate] = scaled_path
 
     return image_paths
+
+
+def orient_exif(image: Any) -> Any:
+    """
+    Rotate the image according to EXIF metadata.
+    """
+    exif_data = image._getexif()
+
+    orientation_tag = 274
+    orientation = exif_data.get(orientation_tag)
+
+    if orientation is None:
+        return image
+
+    # We have some orientation. So we need to flip and mirror the image in
+    # some weird ways. See http://sylvana.net/jpegcrop/exif_orientation.html
+    if orientation == 1:
+        return image
+    if orientation == 2:
+        return image.transpose(Image.FLIP_LEFT_RIGHT)
+    elif orientation == 3:
+        return image.rotate(180)
+    elif orientation == 4:
+        return image.rotate(180).transpose(Image.FLIP_LEFT_RIGHT)
+    elif orientation == 5:
+        return image.rotate(-90, expand=True).transpose(Image.FLIP_LEFT_RIGHT)
+    elif orientation == 6:
+        return image.rotate(-90, expand=True)
+    elif orientation == 7:
+        return image.rotate(90, expand=True).transpose(Image.FLIP_LEFT_RIGHT)
+    elif orientation == 8:
+        return image.rotate(90, expand=True)
