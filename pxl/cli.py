@@ -132,7 +132,7 @@ def upload_cmd(dir_name: str, force: bool) -> None:
 def build_cmd() -> None:
     """Build a static site based on current state."""
     click.echo("Building site...", err=True)
-    output_dir = Path.cwd() / "build"
+    output_dir = Path.cwd() / "ignore" / "build"
     design_dir = Path.cwd() / "design"
 
     cfg = config.load()
@@ -166,7 +166,7 @@ def build_cmd() -> None:
 @click.option("--bind", default="", help="Address to bind on (default: all interfaces)")
 def preview_cmd(port: int, bind: str) -> None:
     """Run a local webserver on build output"""
-    output_dir = Path.cwd() / "build"
+    output_dir = Path.cwd() / "ignore" / "build"
     if not output_dir.is_dir():
         click.echo("No output to serve. Please run `pxl build` first.", err=True)
         sys.exit(1)
