@@ -1,0 +1,35 @@
+site_name: pxl
+site_dir: ignore/docs
+site_url: https://pxl-docs.svsticky.nl/
+docs_dir: docs/content
+repo_url: https://github.com/svsticky/pxl
+strict: true
+theme:
+  name: null
+  custom_dir: docs/theme
+plugins:
+  - exclude:
+      glob:
+        - "README.theme.md"
+nav:
+  - Introduction:
+    - index.md
+    - philosophy.md
+  - Usage:
+    - installation.md
+    - configuration.md
+    - uploading.md
+    - deployment.md
+  - Reference:
+    - pxl build: ref/build.md
+    - pxl clean: ref/clean.md
+    - pxl deploy: ref/deploy.md
+    - pxl init: ref/init.md
+    - pxl preview: ref/preview.md
+    - pxl upload: ref/upload.md
+  - Internals:
+    - state-format.md
+  - Development:
+    - git-conventions.md
+    - high-level-implementation.md
+  - colophon.md

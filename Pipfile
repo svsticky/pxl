@@ -6,15 +6,19 @@ name = "pypi"
 [packages]
 "boto3" = "*"
 click = "*"
-pyyaml = "*"
 "jinja2" = "*"
 Pillow = "*"
 
 [dev-packages]
 mypy-mypyc = "*"
 black = "==18.9b0"
+mkdocs = "*"
+mkdocs-exclude = "*"
+click-man = "*"
 
 [scripts]
+docs = "mkdocs serve"
+docs-build = "mkdocs build"
 format = "black ."
 format-check = "black --check ."
 typecheck = "mypy --strict ."

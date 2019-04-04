@@ -18,6 +18,7 @@ in the terminal.
 
 Example (commit `9a1bf15`):
 
+```
 cli: Add validation of user input to get_input
 
 This abstracts retries on invalid answers and makes it easier
