@@ -57,6 +57,11 @@ def orient_exif(image: Any) -> Any:
     """
     exif_data = image._getexif()
 
+    # EXIF metadata is a binary format. The magic number below stands for
+    # the part of the metadata which all compliant software uses as the
+    # orientation tag. The parsing logic above only yields a dict from
+    # magic numbers to binary data. We need to use this number to get the
+    # orientation number, which is another magic number.
     orientation_tag = 274
     orientation = exif_data.get(orientation_tag)
 
