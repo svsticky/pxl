@@ -23,5 +23,6 @@ Please refer to the [**Development documentation**][pxl-docs-dev].
 
  [pxl-demo]: https://pxl-demo.svsticky.nl/
  [pxl-docs]: https://pxl-docs.svsticky.nl/
+ [pxl-docs-dev]: https://pxl-docs.svsticky.nl/git-conventions
  [pxl-license]: ./LICENSE
  [pxl-screenshot]: ./docs/photo-viewer.png
