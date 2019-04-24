@@ -36,6 +36,8 @@ def build(
             image_dir = album_dir / str(image.remote_uuid)
             image_dir.mkdir()
 
+            title = f"{album.name_display} - {i} / {len(album.images) - 1}"
+
             with (image_dir / "index.html").open("w+") as f:
                 img_prev = album.images[i - 1] if i - 1 >= 0 else None
                 img_next = album.images[i + 1] if i + 1 < len(album.images) else None
@@ -46,6 +48,7 @@ def build(
                     img_next=img_next,
                     img_baseurl=bucket_puburl,
                     album_name=album.name_nav,
+                    title=title,
                 ).dump(f)
 
 
