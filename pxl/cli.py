@@ -199,7 +199,7 @@ def deploy_cmd() -> None:
         click.echo("Config not initialized. Please run `pxl init` first.", err=False)
         sys.exit(1)
 
-    output_dir = Path.cwd() / "build"
+    output_dir = Path.cwd() / "ignore" / "build"
     if not output_dir.is_dir():
         click.echo("No output to deploy. Please run `pxl build` first.", err=False)
         sys.exit(1)
