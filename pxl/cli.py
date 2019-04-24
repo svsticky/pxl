@@ -208,7 +208,7 @@ def deploy_cmd() -> None:
 
     deploy_command = [
         "rsync",
-        "-azP",
+        "-rzP",
         "--delete",
         f"{output_dir}/",
         f"{cfg.deploy_user}@{cfg.deploy_host}:{cfg.deploy_path}",
