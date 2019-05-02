@@ -22,6 +22,7 @@ a top level object from which `pxl` understands the following config keys:
  - `"deploy_host"`
  - `"deploy_user"`
  - `"deploy_path"`
+ - `"public_image_url"`
 
 You can write this file yourself, or you can use the setup wizard below. In
 case `pxl` ever gets new settings, it is probably good to know that this file
@@ -38,7 +39,8 @@ This is an example config file:
   "s3_key_secret": "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
   "deploy_host": "svsticky.nl",
   "deploy_user": "pxl",
-  "deploy_path": "pxl-demo.svsticky.nl"
+  "deploy_path": "pxl-demo.svsticky.nl",
+  "public_image_url": "https://pxl-demo.ams3.cdn.digitaloceanspaces.com"
 }
 ```
 
@@ -64,6 +66,7 @@ S3 key secret (not shown):
 Deploy host: svsticky.nl
 Deploy user: pxl
 Deploy path: pxl-demo.svsticky.nl
+Public image base URL (optional) []: https://pxl-demo.ams3.cdn.digitaloceanspaces.com
 ```
 
  [docs-install]: /installation
