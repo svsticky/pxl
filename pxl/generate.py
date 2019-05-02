@@ -7,7 +7,11 @@ import pxl.state as state
 
 
 def build(
-    overview: state.Overview, output_dir: Path, template_dir: Path, bucket_puburl: str
+    overview: state.Overview,
+    output_dir: Path,
+    template_dir: Path,
+    bucket_puburl: str,
+    public_image_url: str,
 ) -> None:
     """Build a static site based on the state."""
 
@@ -22,15 +26,17 @@ def build(
     shutil.copytree(template_dir / "js", output_dir / "js")
     shutil.copy(template_dir / "404.html", output_dir / "404.html")
 
+    img_baseurl = public_image_url or bucket_puburl
+
     with (output_dir / "index.html").open("w+") as f:
-        index_template.stream(overview=overview, img_baseurl=bucket_puburl).dump(f)
+        index_template.stream(overview=overview, img_baseurl=img_baseurl).dump(f)
 
     for album in overview.albums:
         album_dir = output_dir / album.name_nav
         album_dir.mkdir()
 
         with (album_dir / "index.html").open("w+") as f:
-            album_template.stream(album=album, img_baseurl=bucket_puburl).dump(f)
+            album_template.stream(album=album, img_baseurl=img_baseurl).dump(f)
 
         for i, image in enumerate(album.images):
             image_dir = album_dir / str(image.remote_uuid)
@@ -46,7 +52,7 @@ def build(
                     img=image,
                     img_prev=img_prev,
                     img_next=img_next,
-                    img_baseurl=bucket_puburl,
+                    img_baseurl=img_baseurl,
                     album_name=album.name_nav,
                     title=title,
                 ).dump(f)

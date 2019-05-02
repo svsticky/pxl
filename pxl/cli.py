@@ -160,6 +160,7 @@ def build_cmd() -> None:
             output_dir=output_dir,
             template_dir=design_dir,
             bucket_puburl=bucket_puburl,
+            public_image_url=cfg.public_image_url,
         )
     click.echo("Done.", err=True)
 
