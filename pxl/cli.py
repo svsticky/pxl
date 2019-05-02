@@ -44,6 +44,8 @@ def init_cmd(force: bool) -> None:
     deploy_user = click.prompt("Deploy user")
     deploy_path = click.prompt("Deploy path")
 
+    public_image_url = click.prompt("Public image base URL (optional)", default="")
+
     cfg = config.Config(
         s3_endpoint,
         s3_region,
@@ -53,6 +55,7 @@ def init_cmd(force: bool) -> None:
         deploy_host,
         deploy_user,
         deploy_path,
+        public_image_url,
     )
 
     config.save(cfg)

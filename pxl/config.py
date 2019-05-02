@@ -21,6 +21,7 @@ class Config:
     deploy_host: str
     deploy_user: str
     deploy_path: str
+    public_image_url: str
 
     def to_json(self) -> Dict[str, str]:
         return {
@@ -32,6 +33,7 @@ class Config:
             "deploy_host": self.deploy_host,
             "deploy_user": self.deploy_user,
             "deploy_path": self.deploy_path,
+            "public_image_url": self.public_image_url,
         }
 
     @classmethod
@@ -45,6 +47,7 @@ class Config:
             deploy_host=json["deploy_host"],
             deploy_user=json["deploy_user"],
             deploy_path=json["deploy_path"],
+            public_image_url=json.get("public_image_url", ""),
         )
 
 
