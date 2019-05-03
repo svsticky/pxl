@@ -2,11 +2,9 @@
   background: var(--grey-main);
   display: grid;
   grid-template-columns: repeat(1, 1fr);
-  grid-template-rows: repeat(auto-fill, 300px);
   grid-row-gap: 1em;
   grid-column-gap: 1em;
   padding: 1em;
-  min-height: 100vh;
 }
 
 @media screen and (min-width: 800px) {
@@ -27,6 +25,7 @@
   position: relative;
   overflow: hidden;
   border-radius: 5px;
+  min-height: 300px;
 }
 
 .album .album-cover {
