@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+/usr/lib/pxl/venv/bin/python /usr/lib/pxl/main.py "$@"
+
