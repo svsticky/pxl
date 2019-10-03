@@ -3,3 +3,4 @@ Version: 0
 Architecture: all
 Maintainer: IT Crowd <server@svsticky.nl>
 Description: Manage photo albums on S3 buckets
+Depends: python3.7

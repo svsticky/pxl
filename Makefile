@@ -15,11 +15,8 @@ build:
 	source package/usr/lib/pxl/venv/bin/activate; \
 	pipenv sync; \
 	deactivate;
-	dpkg-deb -b package/ pxl.deb
+	dpkg-deb -b --root-owner-group package/ pxl.deb
 	@echo "You can now install pxl by running 'sudo dpkg -i pxl.deb'"
 
 clean:
 	rm -rf package/usr/lib/pxl
-
-
-

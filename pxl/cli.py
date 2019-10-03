@@ -18,7 +18,11 @@ import pxl.generate as generate
 import pxl.state as state
 import pxl.upload as upload
 
-entrypoint = Path(entrypoint_file).parent
+entrypoint = Path(entrypoint_file).parent.absolute()
+if entrypoint.match("/usr/*"):
+    build_path = Path.home() / ".local" / "share" / "pxl" / "build"
+else:
+    build_path = Path("ignore/build")
 
 
 @click.group(name="pxl")
@@ -137,7 +141,7 @@ def upload_cmd(dir_name: str, force: bool) -> None:
 @cli.command("build")
 def build_cmd() -> None:
     """Build a static site based on current state."""
-    output_dir = Path(entrypoint) / "ignore" / "build"
+    output_dir = build_path
     output_dir.mkdir(parents=True, exist_ok=True)
 
     click.echo(f"Building site to {output_dir}...", err=True)
@@ -175,7 +179,7 @@ def build_cmd() -> None:
 @click.option("--bind", default="", help="Address to bind on (default: all interfaces)")
 def preview_cmd(port: int, bind: str) -> None:
     """Run a local webserver on build output"""
-    output_dir = Path(entrypoint) / "ignore" / "build"
+    output_dir = build_path
     if not output_dir.is_dir():
         click.echo("No output to serve. Please run `pxl build` first.", err=True)
         sys.exit(1)
@@ -208,7 +212,7 @@ def deploy_cmd() -> None:
         click.echo("Config not initialized. Please run `pxl init` first.", err=False)
         sys.exit(1)
 
-    output_dir = Path(entrypoint) / "ignore" / "build"
+    output_dir = build_path
     if not output_dir.is_dir():
         click.echo("No output to deploy. Please run `pxl build` first.", err=False)
         sys.exit(1)
