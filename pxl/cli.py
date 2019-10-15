@@ -132,14 +132,15 @@ def upload_cmd(dir_name: str, force: bool) -> None:
 
 
 @cli.command("build")
-def build_cmd() -> None:
+@click.option("--force", is_flag=True, type=bool, help="Force break lock")
+def build_cmd(force: bool) -> None:
     """Build a static site based on current state."""
     click.echo("Building site...", err=True)
     output_dir = Path.cwd() / "ignore" / "build"
     design_dir = Path.cwd() / "design"
 
     cfg = config.load()
-    with upload.client(cfg) as client:
+    with upload.client(cfg, break_lock=force) as client:
         try:
             pxl_state_json = upload.get_json(client, "state.json")
             overview = state.Overview.from_json(pxl_state_json)
