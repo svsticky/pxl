@@ -69,11 +69,21 @@ def client(cfg: config.Config, *, break_lock: bool = False) -> Iterator[Client]:
     try:
         resp = boto.list_objects_v2(Prefix="lock.json", Bucket=cfg.s3_bucket)
         for obj in resp.get("Contents", []):
-            if break_lock:
-                continue
+            object_data = boto.get_object(Key="lock.json", Bucket=cfg.s3_bucket)
+            lock_json = json.load(object_data["Body"])
+            existing_lock = Lock.from_json(lock_json)
 
-            print("Lock exists. Exiting.")
-            sys.exit(1)
+            lock_info = f"{existing_lock.user}@{existing_lock.hostname} on {existing_lock.start_time}"
+
+            if not break_lock:
+                print("Lock exists, aborting.")
+                print(f"The state was locked by {lock_info}.")
+                print("Pass --force to ignore this.")
+
+                sys.exit(1)
+
+            else:
+                print(f"Breaking a lock set by {lock_info}.")
 
         boto.put_object(
             Body=json.dumps(Lock.new().to_json()),
