@@ -220,5 +220,49 @@ def deploy_cmd() -> None:
     subprocess.run(deploy_command)
 
 
+@cli.command("delete")
+@click.argument("album_name")
+@click.option("--force", is_flag=True, type=bool, help="Force break lock")
+def delete_cmd(album_name: str, force: bool) -> None:
+    """
+    Delete an album from state file and remove its pictures from the file hosting.
+    """
+    cfg = config.load()
+
+    with upload.client(cfg, break_lock=force) as client:
+
+        try:
+            pxl_state_json = upload.get_json(client, "state.json")
+            pxl_state = state.Overview.from_json(pxl_state_json)
+            assert pxl_state is not None, "Expected state to be valid"
+        except client.boto.exceptions.NoSuchKey as e:
+            pxl_state = state.Overview.empty()
+        except Exception as e:
+            print(e)
+            sys.exit(1)
+
+        print(pxl_state)
+
+        # Get existing album with this name to check if it exists
+        album = pxl_state.get_album_by_name(album_name)
+        if album:
+            click.echo("Album found, deleting pictures...")
+            for image in album.images:
+                upload.delete_image(client, image.get_name("original"))
+                upload.delete_image(client, image.get_name("display_w_1600"))
+                upload.delete_image(client, image.get_name("thumbnail_w_400"))
+
+        else:
+            click.echo("Given album not found")
+            sys.exit(1)
+
+        click.echo("deleting album...")
+
+        pxl_state = pxl_state.remove_album(album)
+        upload.private_json(client, json.dumps(pxl_state.to_json()), "state.json")
+
+        click.echo("deleted album, please run build and deploy now")
+
+
 def main() -> None:
     cli()

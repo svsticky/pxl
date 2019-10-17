@@ -168,6 +168,14 @@ class Overview:
 
         return None
 
+    def remove_album(self, album_to_remove: Album) -> Overview:
+        albums = [
+            album
+            for album in self.albums
+            if album.name_display != album_to_remove.name_display
+        ]
+        return Overview(albums=albums)
+
     @classmethod
     def empty(cls) -> Overview:
         return cls(albums=[])

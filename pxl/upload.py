@@ -150,3 +150,13 @@ def get_normalized_extension(filename: Path) -> str:
         return ".jpg"
 
     return suffix_lowered
+
+
+def delete_image(client: Client, filename: str) -> None:
+    """
+    Delete an image from the photo hosting.
+    """
+    client.boto.delete_objects(
+        Delete={"Objects": [{"Key": filename + ".jpg"}]}, Bucket=client.cfg.s3_bucket
+    )
+    print("deleted " + filename + ".jpg")
