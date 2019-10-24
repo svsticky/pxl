@@ -1,0 +1,4 @@
+#!/bin/sh
+
+# Remove generate files (forced to ignore non 0 exit code when folder does not exist)
+rm -rf /usr/lib/pxl/ignore
