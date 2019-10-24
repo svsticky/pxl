@@ -234,7 +234,7 @@ def deploy_cmd() -> None:
 @click.option("--force", is_flag=True, type=bool, help="Force break lock")
 def delete_cmd(album_name: str, force: bool) -> None:
     """
-    Delete an album from state file and remove its pictures from the file hosting.
+    Delete an album and its pictures.
     """
     cfg = config.load()
 
