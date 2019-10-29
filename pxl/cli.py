@@ -11,7 +11,7 @@ import sys
 
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Callable, Optional
+from typing import Callable, List, Optional
 
 import pxl.config as config
 import pxl.generate as generate
@@ -219,14 +219,62 @@ def deploy_cmd() -> None:
 
     cfg = config.load()
 
-    deploy_command = [
+    dry_run_result = subprocess.run(
+        build_deploy_rsync(output_dir, cfg, dry_run=True),
+        capture_output=True,
+        text=True,
+    )
+
+    # Inspect dry run output to check whether there are any files to delete
+    if len(dry_run_result.stdout) > 0:
+        stdout_lines = dry_run_result.stdout.split("\n")
+        click.echo(
+            click.style(
+                "Warning! Rsync reports that it will delete these files:", fg="yellow"
+            )
+        )
+
+        for line in stdout_lines[:-1]:
+            parts = line.split(" ", 1)
+
+            click.echo(click.style(parts[1], fg="yellow"))
+
+        if not click.confirm("Continue?"):
+            click.echo("Aborting.")
+            return
+
+    dry_run_result = subprocess.run(build_deploy_rsync(output_dir, cfg, dry_run=False))
+
+
+def build_deploy_rsync(
+    output_dir: Path, cfg: config.Config, dry_run: bool = False
+) -> List[str]:
+    """
+    Helper to build the rsync command for deploying.
+
+    If we're doing a dry run, the command will output all files to be deleted
+    on stdout.  If we're not doing a dry run, the command will output all
+    altered files and progress on stderr.
+    """
+
+    result = [
         "rsync",
-        "-rzP",
+        "--recursive",
+        "--compress",
+        "--partial",
         "--delete",
         f"{output_dir}/",
         f"{cfg.deploy_user}@{cfg.deploy_host}:{cfg.deploy_path}",
     ]
-    subprocess.run(deploy_command)
+
+    if dry_run:
+        result.insert(1, "--dry-run")
+        result.insert(1, "--info=DEL")
+
+    else:
+        result.insert(1, "--progress")
+
+    return result
 
 
 @cli.command("delete")
