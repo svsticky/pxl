@@ -86,3 +86,6 @@ def orient_exif(image: Any) -> Any:
         return image.rotate(90, expand=True).transpose(Image.FLIP_LEFT_RIGHT)
     elif orientation == 8:
         return image.rotate(90, expand=True)
+
+    # In the unlikely case rotation exif tag is 0 or higher then 9
+    return image
