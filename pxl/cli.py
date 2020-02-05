@@ -10,7 +10,6 @@ import socketserver
 import subprocess
 import sys
 import copy
-import os
 
 from dataclasses import dataclass
 from pathlib import Path
@@ -139,7 +138,7 @@ def upload_cmd(dir_name: str, force: bool) -> None:
         click.echo(f"{dir_path} is not a directory.", err=True)
         sys.exit(1)
 
-    if not(os.listdir(path=dir_path)):
+    if not(any(dir_path.iterdir())):
         click.echo(f"{dir_path} is an empty folder.", err=True)
         sys.exit(1)
 
