@@ -13,7 +13,7 @@ import copy
 
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Callable, List, Optional
+from typing import Callable, List, Optional, Any
 
 import pxl.config as config
 import pxl.generate as generate
@@ -26,11 +26,12 @@ if entrypoint.match("/usr/*"):
 else:
     build_path = Path("ignore/build")
 
-def validate(value):
+
+def validate(value: str) -> Optional[Any]:
     try:
-        date = parser.parse(value)
+        date: datetime.datetime = parser.parse(value)
     except:
-        raise click.BadParameter("Wrong date input.", param=value)
+        raise click.BadParameter("Wrong date input.", param=value)  # type: ignore
     return date
 
 
@@ -86,6 +87,7 @@ def clean_cmd() -> None:
     click.confirm("Do you want to continue?", abort=True)
     config.clean()
 
+
 @cli.command(name="edit")
 @click.argument("album_name")
 @click.option("--force", is_flag=True, type=bool, help="Force break lock")
@@ -107,31 +109,41 @@ def edit_cmd(album_name: str, force: bool) -> None:
 
         print(pxl_state)
         old_album = pxl_state.get_album_by_name(album_name)
-        if not(old_album):
+        if not (old_album):
             click.echo(f"{album_name} does not exist", err=True)
             sys.exit(1)
         else:
             new_album = copy.deepcopy(old_album)
             album_name = click.prompt(
-                "What should the new album name be?", default=old_album.name_display)
-            album_date = click.prompt(
-                "What should the new album date be?", default=old_album.created, value_proc=validate)
+                "What should the new album name be?", default=old_album.name_display
+            )
+            album_date = click.prompt(  # type: ignore
+                "What should the new album date be?",
+                default=str(old_album.created),
+                value_proc=validate,
+            )
 
             alt_album = pxl_state.get_album_by_name(album_name)
-            if alt_album and not(album_name == old_album.name_display):
-                 click.confirm("An album with that name already exists. Merge albums?", abort=True)
-                 alt_album.created = album_date
-                 alt_album.images = alt_album.images + old_album.images
-                 pxl_state = pxl_state.remove_album(old_album)
-                 pxl_state = pxl_state.edit_album(alt_album, alt_album)
-                 upload.private_json(client, json.dumps(pxl_state.to_json()), "state.json")
+            if alt_album and not (album_name == old_album.name_display):
+                click.confirm(
+                    "An album with that name already exists. Merge albums?", abort=True
+                )
+                alt_album.created = album_date
+                alt_album.images = alt_album.images + old_album.images
+                pxl_state = pxl_state.remove_album(old_album)
+                pxl_state = pxl_state.edit_album(alt_album, alt_album)
+                upload.private_json(
+                    client, json.dumps(pxl_state.to_json()), "state.json"
+                )
             else:
                 new_album.name_display = album_name
                 new_album.name_nav = album_name.lower().replace(" ", "-")
                 new_album.created = album_date
 
                 pxl_state = pxl_state.edit_album(old_album, new_album)
-                upload.private_json(client, json.dumps(pxl_state.to_json()), "state.json")
+                upload.private_json(
+                    client, json.dumps(pxl_state.to_json()), "state.json"
+                )
 
 
 @cli.command(name="upload")
@@ -170,7 +182,11 @@ def upload_cmd(dir_name: str, force: bool) -> None:
         if album:
             click.confirm("Album already exists. Add to existing album?", abort=True)
         else:
-            date = click.prompt("What date was the album created?", default=datetime.datetime.now(), value_proc=validate)
+            date = click.prompt(
+                "What date was the album created?",
+                default=datetime.datetime.now(),
+                value_proc=validate,
+            )  # type: ignore
 
             click.echo("Creating new album.", err=True)
             album = state.Album(

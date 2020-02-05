@@ -168,11 +168,9 @@ class Overview:
 
         return None
 
-    def edit_album(self, old_album, new_album):
+    def edit_album(self, old_album: Album, new_album: Album) -> Overview:
         albums = [
-            album
-            if album.name_display != old_album.name_display
-            else new_album
+            album if album.name_display != old_album.name_display else new_album
             for album in self.albums
         ]
         return Overview(albums=albums)
