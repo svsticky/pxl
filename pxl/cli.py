@@ -160,6 +160,10 @@ def upload_cmd(dir_name: str, force: bool) -> None:
         click.echo(f"{dir_path} is not a directory.", err=True)
         sys.exit(1)
 
+    if not (any(dir_path.iterdir())):
+        click.echo(f"{dir_path} is an empty folder.", err=True)
+        sys.exit(1)
+
     with upload.client(cfg, break_lock=force) as client:
         album_name = click.prompt(
             "What name should the album have?", default=dir_path.name.title()
@@ -182,11 +186,11 @@ def upload_cmd(dir_name: str, force: bool) -> None:
         if album:
             click.confirm("Album already exists. Add to existing album?", abort=True)
         else:
-            date = click.prompt(
+            date = click.prompt(  # type: ignore
                 "What date was the album created?",
                 default=datetime.datetime.now(),
                 value_proc=validate,
-            )  # type: ignore
+            )
 
             click.echo("Creating new album.", err=True)
             album = state.Album(
