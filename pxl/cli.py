@@ -106,23 +106,32 @@ def edit_cmd(album_name: str, force: bool) -> None:
             sys.exit(1)
 
         print(pxl_state)
-        album = pxl_state.get_album_by_name(album_name)
-        if not(album):
+        old_album = pxl_state.get_album_by_name(album_name)
+        if not(old_album):
             click.echo(f"{album_name} does not exist", err=True)
             sys.exit(1)
         else:
-            new_album = copy.deepcopy(album) 
+            new_album = copy.deepcopy(old_album)
             album_name = click.prompt(
-                "What should the new album name be?", default=album.name_display)
+                "What should the new album name be?", default=old_album.name_display)
             album_date = click.prompt(
-                "What should the new album date be?", default=album.created, value_proc=validate)
+                "What should the new album date be?", default=old_album.created, value_proc=validate)
 
-            new_album.name_display = album_name
-            new_album.name_nav = album_name.lower().replace(" ", "-")
-            new_album.created = album_date
+            alt_album = pxl_state.get_album_by_name(album_name)
+            if alt_album and not(album_name == old_album.name_display):
+                 click.confirm("An album with that name already exists. Merge albums?", abort=True)
+                 alt_album.created = album_date
+                 alt_album.images = alt_album.images + old_album.images
+                 pxl_state = pxl_state.remove_album(old_album)
+                 pxl_state = pxl_state.edit_album(alt_album, alt_album)
+                 upload.private_json(client, json.dumps(pxl_state.to_json()), "state.json")
+            else:
+                new_album.name_display = album_name
+                new_album.name_nav = album_name.lower().replace(" ", "-")
+                new_album.created = album_date
 
-            pxl_state = pxl_state.edit_album(album, new_album)
-            upload.private_json(client, json.dumps(pxl_state.to_json()), "state.json")
+                pxl_state = pxl_state.edit_album(old_album, new_album)
+                upload.private_json(client, json.dumps(pxl_state.to_json()), "state.json")
 
 
 @cli.command(name="upload")
