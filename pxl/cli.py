@@ -1,6 +1,7 @@
 from __main__ import __file__ as entrypoint_file  # type: ignore
 import click
 import datetime
+from dateutil import parser
 import functools
 import getpass
 import http.server
@@ -8,6 +9,7 @@ import json
 import socketserver
 import subprocess
 import sys
+import copy
 
 from dataclasses import dataclass
 from pathlib import Path
@@ -23,6 +25,13 @@ if entrypoint.match("/usr/*"):
     build_path = Path.home() / ".local" / "share" / "pxl" / "build"
 else:
     build_path = Path("ignore/build")
+
+def validate(value):
+    try:
+        date = parser.parse(value)
+    except:
+        raise click.BadParameter("Wrong date input.", param=value)
+    return date
 
 
 @click.group(name="pxl")
@@ -77,6 +86,44 @@ def clean_cmd() -> None:
     click.confirm("Do you want to continue?", abort=True)
     config.clean()
 
+@cli.command(name="edit")
+@click.argument("album_name")
+@click.option("--force", is_flag=True, type=bool, help="Force break lock")
+def edit_cmd(album_name: str, force: bool) -> None:
+    """
+    Edit the name and date of an album
+    """
+    cfg = config.load()
+    with upload.client(cfg, break_lock=force) as client:
+        try:
+            pxl_state_json = upload.get_json(client, "state.json")
+            pxl_state = state.Overview.from_json(pxl_state_json)
+            assert pxl_state is not None, "Expected state to be valid"
+        except client.boto.exceptions.NoSuchKey as e:
+            pxl_state = state.Overview.empty()
+        except Exception as e:
+            print(e)
+            sys.exit(1)
+
+        print(pxl_state)
+        album = pxl_state.get_album_by_name(album_name)
+        if not(album):
+            click.echo(f"{album_name} does not exist", err=True)
+            sys.exit(1)
+        else:
+            new_album = copy.deepcopy(album) 
+            album_name = click.prompt(
+                "What should the new album name be?", default=album.name_display)
+            album_date = click.prompt(
+                "What should the new album date be?", default=album.created, value_proc=validate)
+
+            new_album.name_display = album_name
+            new_album.name_nav = album_name.lower().replace(" ", "-")
+            new_album.created = album_date
+
+            pxl_state = pxl_state.edit_album(album, new_album)
+            upload.private_json(client, json.dumps(pxl_state.to_json()), "state.json")
+
 
 @cli.command(name="upload")
 @click.argument("dir_name")
@@ -114,11 +161,13 @@ def upload_cmd(dir_name: str, force: bool) -> None:
         if album:
             click.confirm("Album already exists. Add to existing album?", abort=True)
         else:
+            date = click.prompt("What date was the album created?", default=datetime.datetime.now(), value_proc=validate)
+
             click.echo("Creating new album.", err=True)
             album = state.Album(
                 name_display=album_name,
                 name_nav=album_name.lower().replace(" ", "-"),
-                created=datetime.datetime.now(),
+                created=date,
                 images=[],
             )
 
