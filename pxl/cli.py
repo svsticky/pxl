@@ -10,6 +10,7 @@ import socketserver
 import subprocess
 import sys
 import copy
+import os
 
 from dataclasses import dataclass
 from pathlib import Path
@@ -32,7 +33,6 @@ def validate(value):
     except:
         raise click.BadParameter("Wrong date input.", param=value)
     return date
-
 
 @click.group(name="pxl")
 def cli() -> None:
@@ -137,6 +137,10 @@ def upload_cmd(dir_name: str, force: bool) -> None:
     dir_path = Path(dir_name)
     if not dir_path.is_dir():
         click.echo(f"{dir_path} is not a directory.", err=True)
+        sys.exit(1)
+
+    if not(os.listdir(path=dir_path)):
+        click.echo(f"{dir_path} is an empty folder.", err=True)
         sys.exit(1)
 
     with upload.client(cfg, break_lock=force) as client:
