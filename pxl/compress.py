@@ -56,7 +56,7 @@ def orient_exif(image: Any) -> Any:
     Rotate the image according to EXIF metadata.
     """
     exif_data = image._getexif()
-    if not(exif_data):
+    if not (exif_data):
         return image
 
     # EXIF metadata is a binary format. The magic number below stands for
