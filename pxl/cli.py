@@ -34,6 +34,7 @@ def validate(value: str) -> Optional[Any]:
         raise click.BadParameter("Wrong date input.", param=value)  # type: ignore
     return date
 
+
 @click.group(name="pxl")
 def cli() -> None:
     """Photo management script for S3 albums."""
@@ -159,7 +160,7 @@ def upload_cmd(dir_name: str, force: bool) -> None:
         click.echo(f"{dir_path} is not a directory.", err=True)
         sys.exit(1)
 
-    if not(any(dir_path.iterdir())):
+    if not (any(dir_path.iterdir())):
         click.echo(f"{dir_path} is an empty folder.", err=True)
         sys.exit(1)
 
@@ -185,11 +186,11 @@ def upload_cmd(dir_name: str, force: bool) -> None:
         if album:
             click.confirm("Album already exists. Add to existing album?", abort=True)
         else:
-            date = click.prompt(
+            date = click.prompt(  # type: ignore
                 "What date was the album created?",
                 default=datetime.datetime.now(),
                 value_proc=validate,
-            )  # type: ignore
+            )
 
             click.echo("Creating new album.", err=True)
             album = state.Album(
