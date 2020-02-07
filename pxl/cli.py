@@ -160,8 +160,8 @@ def upload_cmd(dir_name: str, force: bool) -> None:
         click.echo(f"{dir_path} is not a directory.", err=True)
         sys.exit(1)
 
-    if not (any(dir_path.iterdir())):
-        click.echo(f"{dir_path} is an empty folder.", err=True)
+    if not list(dir_path.glob("*.jpg")):
+        click.echo(f"{dir_path} does not contain any .jpg files.", err=True)
         sys.exit(1)
 
     with upload.client(cfg, break_lock=force) as client:
