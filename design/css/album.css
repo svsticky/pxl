@@ -30,34 +30,45 @@ nav .album-name {
 }
 
 .album {
+  content-visibility: auto;
   padding: 1em;
-  columns: 1;
+  /*columns: 1;
   column-fill: balance;
-  column-gap: 1em;
+  column-gap: 1em;*/
+  display: grid;
+  grid-template-columns: repeat(2, minmax(200px, 1fr));
+  grid-auto-rows: auto;
+  grid-gap: 1em;
+  grid-auto-flow: dense;
+
 }
 
 @media screen and (min-width: 400px) {
   .album {
-    columns: 2;
+    /*columns: 2;*/
+    grid-template-columns: repeat(2, minmax(200px, 1fr));
   }
 }
 
 @media screen and (min-width: 800px) {
   .album {
-    columns: 3;
+    /*columns: 3;*/
+    grid-template-columns: repeat(3, minmax(200px, 1fr));
   }
 }
 
 @media screen and (min-width: 1200px) {
   .album {
-    columns: 5;
+    grid-template-columns: repeat(5, minmax(200px, 1fr));
+    /*columns: 5;*/
     max-width: 1920px;
     margin: 0 auto;
   }
 }
 
+
 .photo {
-  margin-bottom: 1em;
+  /*margin-bottom: 1em;*/
   /* Not honoured by Chrome while animating the scale transform */
   border-radius: 5px;
   overflow: hidden;
@@ -75,8 +86,10 @@ nav .album-name {
 
 .photo img {
   width: 100%;
+  /*height: calc(50vw - 3em);*/
   object-fit: cover;
   -webkit-transition: transform 0.2s;
+
 }
 
 .photo:hover img {
