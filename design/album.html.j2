@@ -26,7 +26,7 @@
     {% for image in album.images %}
     <div class="photo">
       <a href="/{{ album.name_nav }}/{{ image.remote_uuid }}">
-        <img src="{{ img_baseurl }}/{{ image.get_name("thumbnail_w_400") }}.jpg">
+        <img loading="lazy" decoding="async" src="{{ img_baseurl }}/{{ image.get_name("thumbnail_w_400") }}.jpg">
       </a>
     </div>
     {% endfor %}
