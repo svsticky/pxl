@@ -40,13 +40,23 @@ nav .album-name {
   grid-auto-rows: auto;
   grid-gap: 1em;
   grid-auto-flow: dense;
+  min-width: 400px;
+}
 
+.photo img {
+  width: 100%;
+  height: calc(50vw - 3em);
+  object-fit: cover;
+  -webkit-transition: transform 0.2s;
 }
 
 @media screen and (min-width: 400px) {
   .album {
     /*columns: 2;*/
     grid-template-columns: repeat(2, minmax(200px, 1fr));
+  }
+  .photo img{
+    height: calc(50vw - 3em);
   }
 }
 
@@ -55,6 +65,10 @@ nav .album-name {
     /*columns: 3;*/
     grid-template-columns: repeat(3, minmax(200px, 1fr));
   }
+  .photo img{
+    height: calc(33.33vw - 4em);
+  }
+
 }
 
 @media screen and (min-width: 1200px) {
@@ -63,6 +77,9 @@ nav .album-name {
     /*columns: 5;*/
     max-width: 1920px;
     margin: 0 auto;
+  }
+  .photo img{
+    height: calc(20vw - 6em);
   }
 }
 
@@ -84,13 +101,7 @@ nav .album-name {
   line-height: 0;
 }
 
-.photo img {
-  width: 100%;
-  /*height: calc(50vw - 3em);*/
-  object-fit: cover;
-  -webkit-transition: transform 0.2s;
 
-}
 
 .photo:hover img {
   transform: scale(1.1);
