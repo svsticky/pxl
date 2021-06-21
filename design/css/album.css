@@ -32,9 +32,6 @@ nav .album-name {
 .album {
   content-visibility: auto;
   padding: 1em;
-  /*columns: 1;
-  column-fill: balance;
-  column-gap: 1em;*/
   display: grid;
   grid-template-columns: repeat(2, minmax(200px, 1fr));
   grid-auto-rows: auto;
@@ -52,7 +49,6 @@ nav .album-name {
 
 @media screen and (min-width: 400px) {
   .album {
-    /*columns: 2;*/
     grid-template-columns: repeat(2, minmax(200px, 1fr));
   }
   .photo img{
@@ -62,7 +58,6 @@ nav .album-name {
 
 @media screen and (min-width: 800px) {
   .album {
-    /*columns: 3;*/
     grid-template-columns: repeat(3, minmax(200px, 1fr));
   }
   .photo img{
@@ -74,7 +69,6 @@ nav .album-name {
 @media screen and (min-width: 1200px) {
   .album {
     grid-template-columns: repeat(5, minmax(200px, 1fr));
-    /*columns: 5;*/
     max-width: 1920px;
     margin: 0 auto;
   }
@@ -85,7 +79,6 @@ nav .album-name {
 
 
 .photo {
-  /*margin-bottom: 1em;*/
   /* Not honoured by Chrome while animating the scale transform */
   border-radius: 5px;
   overflow: hidden;
