@@ -160,7 +160,7 @@ def upload_cmd(dir_name: str, force: bool) -> None:
         click.echo(f"{dir_path} is not a directory.", err=True)
         sys.exit(1)
 
-    if not list(dir_path.glob("*.jpg")):
+    if not list(dir_path.glob("*.jpg")) or not list(dir_path.glob("*.JPG")):
         click.echo(f"{dir_path} does not contain any .jpg files.", err=True)
         sys.exit(1)
 
