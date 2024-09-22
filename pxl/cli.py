@@ -202,7 +202,7 @@ def upload_cmd(dir_name: str, force: bool) -> None:
 
         # Find all files with known JPEG extensions. We don't
         # traverse nested directories, just the toplevel.
-        for entry in dir_path.iterdir():
+        for entry in sorted(dir_path.iterdir()):
             if not entry.is_file():
                 continue
 
