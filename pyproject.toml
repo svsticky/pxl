@@ -1,0 +1,21 @@
+[project]
+name = "pxl"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.7"
+dependencies = [
+  "boto3",
+  "click",
+  "jinja2",
+  "Pillow"
+]
+
+[dependency-groups]
+dev = [
+  "mypy-mypyc",
+  "black==18.9b0",
+  "mkdocs",
+  "mkdocs-exclude",
+  "click-man"
+]
